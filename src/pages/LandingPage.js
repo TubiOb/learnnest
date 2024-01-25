@@ -9,7 +9,7 @@ const LandingPage = () => {
   return (
     <Box display='flex' alignItems='center' justifyContent='center' w='full' h={['screen', '100svh']} flexDir={['column', 'row']} bg='mintcream' >
         <Box display='flex' alignItems='center' justifyContent='space-between' w={['95%', '80%']} mx='auto' h='full' p='3' flexDir={['column', 'row']} gap='10' rounded='lg' >
-            <NavLink to='/login' w={['90%', '80']} h={['300px', '300px']}>
+            <NavLink to='/login?role=student' w={['90%', '80']} h={['300px', '300px']}>
                 <Box display='flex' flexDir='column' alignItems='center' justifyContent='center' boxShadow='base' bg='white' mx='auto' _hover={{ boxShadow: 'xl'}} py='3' cursor='pointer' gap='3' textAlign='center' rounded='xl' >
                     <Image src={Student} alt='Students Login' objectFit='cover' w='full' h={['80%', '250px']} />
                     <Text as='h4' fontSize={['smaller', 'medium', 'large']} fontWeight='semibold' px='2'>Student</Text>
@@ -18,7 +18,7 @@ const LandingPage = () => {
             </NavLink>
             
 
-            <NavLink to='/login' w={['90%', '80']} h={['300px', '300px']}>
+            <NavLink to='/login?role=admin' w={['90%', '80']} h={['300px', '300px']}>
                 <Box display='flex' flexDir='column' alignItems='center' justifyContent='center' boxShadow='base' bg='white' mx='auto' _hover={{ boxShadow: 'xl'}} py='3' cursor='pointer' gap='3' textAlign='center' rounded='xl'>
                     <Image src={Admin} alt='Admin Login' objectFit='cover' w='full' h={['80%', '250px']} />
                     <Text as='h4' fontSize={['smaller', 'medium', 'large']} fontWeight='semibold' px='2'>Admin</Text>
@@ -27,7 +27,7 @@ const LandingPage = () => {
             </NavLink>
             
 
-            <NavLink to='/login' w={['90%', '80']} h={['300px', '300px']}>
+            <NavLink to='/login?role=teacher' w={['90%', '80']} h={['300px', '300px']}>
                 <Box display='flex' flexDir='column' alignItems='center' justifyContent='center' boxShadow='base' bg='white' mx='auto' _hover={{ boxShadow: 'xl'}} py='3' cursor='pointer' gap='3' textAlign='center' rounded='xl'>
                     <Image src={Teacher} alt='Teahcers Login' objectFit='cover' w='full' h={['80%', '250px']} />
                     <Text as='h4' fontSize={['smaller', 'medium', 'large']} fontWeight='semibold' px='2'>Teacher</Text>

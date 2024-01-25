@@ -3,18 +3,23 @@ import { Box, Image, Text, Hide } from '@chakra-ui/react';
 import Students from '../assets/Students-rafiki.svg'
 import CustomInput from './CustomInput';
 import { NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const LoginForm = () => {
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const role = queryParams.get('role');
+
     const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+    const [password, setPassword] = useState('');
 
-  const handleEmailChange = (value) => {
-    setEmail(value);
-  };
+    const handleEmailChange = (value) => {
+        setEmail(value);
+    };
 
-  const handlePasswordChange = (value) => {
-    setPassword(value);
-  };
+    const handlePasswordChange = (value) => {
+        setPassword(value);
+    };
 
   return (
     <Box display='flex' flexDir='row' alignItems='center' justifyContent='space-between' w='full' h='100svh'>
@@ -43,8 +48,9 @@ const LoginForm = () => {
 
                     <button type="submit" className='text-blue-400 px-2 py-2 rounded-xl w-[70%] mx-auto bg-white font-semibold shadow-neutral-200 border-neutral-50 shadow-md transition duration-300  hover:font-semibold hover:bg-blue-400 hover:text-white hover:shadow-neutral-300 text-sm md:text-lg flex items-center justify-center' >Sign In</button>
                 </form>
-
-                <p className='text-blue-600 my-3 text-xs md:text-sm '>Don't have an account? <NavLink to='/signup' className='underline cursor-pointer'>Sign up</NavLink></p>
+                { role === 'admin' && ( 
+                    <p className='text-blue-600 my-3 text-xs md:text-sm '>Don't have an account? <NavLink to='/signup' className='underline cursor-pointer'>Sign up</NavLink></p>
+                 )}
             </Box>
         </Box>
     </Box>
