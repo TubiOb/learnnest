@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import { ChakraProvider } from '@chakra-ui/react'
+import { useState, useEffect } from 'react';
+import { createRoutesFromElements, createBrowserRouter, Route, RouterProvider } from 'react-router-dom';
+import Preloader from './components/Preloader';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import LandingPage from './pages/LandingPage';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route>
+        <Route index element={isLoading ? <Preloader /> : <LandingPage />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+      </Route>
+    )
+  )
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 4500);
+  }, []);
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ChakraProvider>
+        <RouterProvider router={router} />
+      </ChakraProvider>
     </div>
+    
+    
   );
 }
 
