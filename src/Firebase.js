@@ -5,12 +5,12 @@ import { getDatabase } from 'firebase/database';
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyClmaNExEnbBT2vkET6OgbibVUwZmRvl-0",
-  authDomain: "learnnest-3cb0b.firebaseapp.com",
-  projectId: "learnnest-3cb0b",
-  storageBucket: "learnnest-3cb0b.appspot.com",
-  messagingSenderId: "209551083186",
-  appId: "1:209551083186:web:16c34b9dc9ff5d6c1b6bab"
+  apiKey: "AIzaSyA6TOBZprTDJaz8qS8YEhdRcaybZyukFUk",
+  authDomain: "learnnest-df401.firebaseapp.com",
+  projectId: "learnnest-df401",
+  storageBucket: "learnnest-df401.appspot.com",
+  messagingSenderId: "187651218086",
+  appId: "1:187651218086:web:9a2a6e53d75d4c28cd3267"
 };
 
 // Initialize Firebase
