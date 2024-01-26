@@ -61,7 +61,7 @@ const SignupForm = () => {
 
         //    GETTING FIRSTNAME AS USERNAME FROM GOOGLE AUTH //
     const getFirstName = () => {
-        const fullName = formData.username || '';
+        const fullName = formData.name || '';
         const username = fullName.split(' ')[0];
         return username;
     };
@@ -117,7 +117,7 @@ const SignupForm = () => {
 
                     await setDoc(userDocRef, {
                         name: formData.name,
-                        username: getFirstName(formData.username),
+                        username: getFirstName(formData.name),
                         email: formData.email,
                         institution: formData.institution,
                         userImage: DefaultImage,
@@ -232,7 +232,7 @@ const SignupForm = () => {
                     <button type="submit" className='text-blue-400 px-2 py-2 rounded-xl w-[70%] mx-auto bg-white font-semibold shadow-neutral-200 border-neutral-50 shadow-md transition duration-300  hover:font-semibold hover:bg-blue-400 hover:text-white hover:shadow-neutral-300 text-sm md:text-lg flex items-center justify-center' >Sign Up</button>
                 </form>
 
-                <p className='text-blue-500 my-2 text-xs md:text-sm '>Already have an account? <NavLink to='/login' className='underline cursor-pointer'>Sign In</NavLink></p>
+                <p className='text-blue-500 my-2 text-xs md:text-sm '>Already have an account? <NavLink to='/login?role=admin' className='underline cursor-pointer'>Sign In</NavLink></p>
             </Box>
         </Box>
 

@@ -5,6 +5,7 @@ import Preloader from './components/Preloader';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import LandingPage from './pages/LandingPage';
+import ForgotPassword from './pages/ForgotPassword';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -15,6 +16,7 @@ function App() {
         <Route index element={isLoading ? <Preloader /> : <LandingPage />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
       </Route>
     )
   )
