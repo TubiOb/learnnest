@@ -90,7 +90,7 @@ const LoginForm = () => {
                         password: '',
                     });
 
-                    history('/');
+                    history(`/dashboard?role=${role}`);
                 }, 1500);
             }
         }
@@ -163,7 +163,7 @@ const LoginForm = () => {
         
 
         <Box w={['full', 'full', '55%']} h='full' display='flex' alignItems='center' justifyContent='center'>
-            <Box rounded='xl' bg='lightsteelblue' w={['90%', '70%', '80%', '75%']} h='auto' py='9' px='3' gap='4' display='flex' flexDir='column' alignItems='center' fontFamily={'Lato'}>
+            <Box rounded='xl' bg='lightsteelblue' _dark={{ bg: 'white', color: 'blue.600' }} w={['90%', '70%', '80%', '75%']} h='auto' py='9' px='3' gap='4' display='flex' flexDir='column' alignItems='center' fontFamily={'Lato'}>
                 <Box display='flex' alignItems='center' flexDir='column' w={['95%', '80%']} textAlign='center' p='2' gap='1'>
                     <Text as='h4' fontSize={['lg', 'xl', '2xl']} fontWeight='semibold'>Welcome,</Text>
                     <Text as='h4' fontSize={['lg', 'xl', '2xl']} fontWeight='normal'>Glad to see you!</Text>
@@ -180,8 +180,8 @@ const LoginForm = () => {
 
                     <button type="submit" className='text-blue-400 px-2 py-2 rounded-xl w-[70%] mx-auto bg-white font-semibold shadow-neutral-200 border-neutral-50 shadow-md transition duration-300  hover:font-semibold hover:bg-blue-400 hover:text-white hover:shadow-neutral-300 text-sm md:text-lg flex items-center justify-center' >Sign In</button>
                 </form>
-                { role === 'admin' && ( 
-                    <p className='text-blue-600 my-3 text-xs md:text-sm '>Don't have an account? <NavLink to='/signup?role=admin' className='underline cursor-pointer'>Sign up</NavLink></p>
+                { (role === 'admin' || role === 'student' ) && ( 
+                    <p className='text-blue-600 my-3 text-xs md:text-sm '>Don't have an account? <NavLink to={`/signup?role=${role}`} className='underline cursor-pointer'>Sign up</NavLink></p>
                  )}
             </Box>
         </Box>

@@ -6,6 +6,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import LandingPage from './pages/LandingPage';
 import ForgotPassword from './pages/ForgotPassword';
+import Dashboard from './pages/Dashboard';
+import { ThemeProvider } from './ThemeContext';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +19,7 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path='dashboard' element={<Dashboard />} />
       </Route>
     )
   )
@@ -29,13 +32,13 @@ function App() {
 
 
   return (
-    <div>
-      <ChakraProvider>
-        <RouterProvider router={router} />
-      </ChakraProvider>
-    </div>
-    
-    
+    <ThemeProvider>
+      <div className='bg-white dark:bg-[#00072d] text-gray-500 dark:text-white  border-gray-300 dark:border-gray-500'>
+        <ChakraProvider>
+          <RouterProvider router={router} />
+        </ChakraProvider>
+      </div>
+    </ThemeProvider>
   );
 }
 
