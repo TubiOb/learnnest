@@ -163,7 +163,7 @@ const LoginForm = () => {
         
 
         <Box w={['full', 'full', '55%']} h='full' display='flex' alignItems='center' justifyContent='center'>
-            <Box rounded='xl' bg='lightsteelblue' _dark={{ bg: 'white', color: 'blue.600' }} w={['90%', '70%', '80%', '75%']} h='auto' py='9' px='3' gap='4' display='flex' flexDir='column' alignItems='center' fontFamily={'Lato'}>
+            <Box rounded='xl' bg='lightsteelblue' color='blue.500' _dark={{ bg: 'white', color: 'blue.600' }} w={['90%', '70%', '80%', '75%']} h='auto' py='9' px='3' gap='4' display='flex' flexDir='column' alignItems='center' fontFamily={'Lato'}>
                 <Box display='flex' alignItems='center' flexDir='column' w={['95%', '80%']} textAlign='center' p='2' gap='1'>
                     <Text as='h4' fontSize={['lg', 'xl', '2xl']} fontWeight='semibold'>Welcome,</Text>
                     <Text as='h4' fontSize={['lg', 'xl', '2xl']} fontWeight='normal'>Glad to see you!</Text>

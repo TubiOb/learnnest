@@ -8,8 +8,15 @@ import LandingPage from './pages/LandingPage';
 import ForgotPassword from './pages/ForgotPassword';
 import Dashboard from './pages/Dashboard';
 import { ThemeProvider } from './ThemeContext';
+import DashboardLayout from './layouts/DashboadLayout';
+import './index.css'
+import TeacherLayout from './layouts/TeacherLayout';
+import StudentLayout from './layouts/StudentLayout';
+import CourseRegistrationLayout from './layouts/CourseRegistrationLayout';
+import FieldRegistrationLayout from './layouts/FieldRegistrationLayout';
+import AddCourseLayouts from './layouts/AddCourseLayouts';
 
-function App() {
+function App({ role }) {
   const [isLoading, setIsLoading] = useState(true);
 
   const router = createBrowserRouter(
@@ -19,7 +26,14 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
-        <Route path='dashboard' element={<Dashboard />} />
+        <Route path='dashboard' element={<Dashboard />} >
+          <Route path='' element={<DashboardLayout role={role} />} />
+          <Route path={`teachers`} element={<TeacherLayout role={role} />} />
+          <Route path={`students`} element={<StudentLayout role={role} />} />
+          <Route path={`courses`} element={<CourseRegistrationLayout role={role} />} />
+          <Route path={'register-study-course'} element={<FieldRegistrationLayout role={role} />} />
+          <Route path={'subjects'} element={<AddCourseLayouts role={role} />} />
+        </Route>
       </Route>
     )
   )

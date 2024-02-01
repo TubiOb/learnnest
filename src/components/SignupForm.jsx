@@ -376,7 +376,7 @@ const SignupForm = () => {
   return (
     <Box display='flex' flexDir='row' alignItems='center' justifyContent='space-between' w='full' h='100svh' overflowY='auto'>
         <Box w={['full', 'full', '55%']} h='full' display='flex' alignItems='center' justifyContent='center'>
-            <Box rounded='xl' bg='lightsteelblue' _dark={{ bg: 'white', color: 'blue.600' }} w={['90%', '70%', '80%', '75%']} h='auto' py='5' px='3' gap='2' display='flex' flexDir='column' alignItems='center' fontFamily={'Lato'}>
+            <Box rounded='xl' bg='lightsteelblue' color='blue.500' _dark={{ bg: 'white', color: 'blue.600' }} w={['90%', '70%', '80%', '75%']} h='auto' py='5' px='3' gap='2' display='flex' flexDir='column' alignItems='center' fontFamily={'Lato'}>
                 <Box display='flex' alignItems='center' flexDir='column' w={['95%', '80%']} textAlign='center' p='2' gap='1'>
                     <Text as='h4' fontSize={['lg', 'xl', '2xl']} fontWeight='semibold'>{capitalizeFirstLetter(role)} Sign Up</Text>
                     <Text as='h4' fontSize={['lg', 'xl', '2xl']} fontWeight='normal'>Create {capitalizeFirstLetter(role)} Account!</Text>

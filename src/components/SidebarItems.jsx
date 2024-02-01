@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Logo from '../assets/logo192.png'
-import { useLocation, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { IoCalendarOutline } from "react-icons/io5";
 import { GiTeacher, GiArchiveRegister } from "react-icons/gi";
 import { LuLayoutDashboard, LuSunDim } from "react-icons/lu";
@@ -12,46 +12,54 @@ import { SiGoogleclassroom, SiTestcafe } from "react-icons/si";
 import { Box, Avatar } from '@chakra-ui/react';
 import { useTheme } from '../ThemeContext';
 
-const SidebarItems = () => {
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const role = queryParams.get('role');
+const SidebarItems = ({ role }) => {
 
     const { theme, toggleTheme } = useTheme();
+
+    const [activeMenu, setActiveMenu] = useState(() => {
+        // Retrieve the active menu index from localStorage, defaulting to 0 if not present.
+        return parseInt(localStorage.getItem('activeMenuIndex')) || 0;
+    });
+
+    useEffect(() => {
+        // Save the active menu index to localStorage whenever it changes.
+        localStorage.setItem('activeMenuIndex', activeMenu);
+    }, [activeMenu]);
+
+
 
         //   DYNAMICALLY CREATING SIDEBAR MENUITEMS FOR EACH ROLE
     let sidebarMenus = [];
 
     if (role === 'admin') {
         sidebarMenus = [
-            { name: 'Dashboard', icon: LuLayoutDashboard, color: '', active: true },
-            { name: 'Teachers', icon: GiTeacher, color: '', active: false },
-            { name: 'Students', icon: PiStudentDuotone, color: '', active: false },
-            { name: 'Course Field', icon: IoSchool, color: '', active: false },
-            { name: 'Courses', icon: SiGoogleclassroom, color: '', active: false, alert: false },
-            { name: 'Fees', icon: MdPayments, color: 'green.100', active: false },
-            { name: 'School Calendar', icon: IoCalendarOutline, color: '', active: false },
+            { name: 'Dashboard', icon: LuLayoutDashboard, active: true, path: (`/dashboard?role=${role}`) },
+            { name: 'Field', icon: IoSchool, active: false, path: (`register-study-course?role=${role}`) },
+            { name: 'Courses', icon: SiGoogleclassroom, active: false, path: (`subjects?role=${role}`) },
+            { name: 'Lecturers', icon: GiTeacher, active: false, path: (`teachers?role=${role}`) },
+            { name: 'Students', icon: PiStudentDuotone, active: false, path: (`students?role=${role}`) },
+            { name: 'Fees', icon: MdPayments, active: false, path: '' },
+            { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
         ];
     }
     else if (role === 'teacher') {
         sidebarMenus = [
-            { name: 'Dashboard', icon: LuLayoutDashboard, color: '', active: true },
-            { name: 'Students', icon: PiStudentDuotone, color: '', active: false },
-            { name: 'Course Field', icon: IoSchool, color: '', active: false },
-            { name: 'Courses', icon: SiGoogleclassroom, color: '', active: false },
-            { name: 'Assignment', icon: MdAssignment, color: '', active: false },
-            { name: 'Test', icon: SiTestcafe, color: '', active: false },
-            { name: 'School Calendar', icon: IoCalendarOutline, color: '', active: false },
+            { name: 'Dashboard', icon: LuLayoutDashboard, active: true, path: (`/dashboard?role=${role}`) },
+            { name: 'Courses', icon: SiGoogleclassroom, active: false, path: (`courses?role=${role}`) },
+            { name: 'Students', icon: PiStudentDuotone, active: false, path: (`students?role=${role}`) },
+            { name: 'Assignment', icon: MdAssignment, active: false, path: '' },
+            { name: 'Test', icon: SiTestcafe, active: false, path: '' },
+            { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
         ];
     }
     else if (role === 'student') {
         sidebarMenus = [
-            { name: 'Dashboard', icon: LuLayoutDashboard, color: '', active: true },
-            { name: 'Course Registration', icon: GiArchiveRegister, color: '', active: false },
-            { name: 'Assignment', icon: MdAssignment, color: '', active: false },
-            { name: 'Test', icon: SiTestcafe, color: '', active: false },
-            { name: 'School Calendar', icon: IoCalendarOutline, color: '', active: false },
-            { name: 'Fees Payments', icon: MdPayments, color: 'green.100', active: false },
+            { name: 'Dashboard', icon: LuLayoutDashboard, active: true, path: (`/dashboard?role=${role}`) },
+            { name: 'Course Registration', icon: GiArchiveRegister, active: false, path: (`courses?role=${role}`) },
+            { name: 'Assignment', icon: MdAssignment, active: false, path: '' },
+            { name: 'Test', icon: SiTestcafe, active: false, path: '' },
+            { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
+            { name: 'Fees Payments', icon: MdPayments, active: false, path: '' },
         ];
     }
 
@@ -63,12 +71,15 @@ const SidebarItems = () => {
 
         <ul className='flex flex-col flex-1 items-center justify-center gap-4'>
             {sidebarMenus.map((menu, index) => (
-                <li key={index} className={`flex gap-1 items-center cursor-pointer px-1 py-1 relative group rounded-lg ${menu.active ? 'bg-blue-200 hover:bg-blue-400' : 'hover:bg-blue-400 hover:text-white'}`}>
-                    {React.createElement(menu.icon, {color: menu.color, size: 25})}
-                    <div className='absolute rounded-md px-2 py-1 ml-10 bg-blue-400 font-medium z-50 invisible opacity-10 translate-x-1 transition-all group-hover:visible group-hover:opacity-100 group-hover:z-50 group-hover:translate-x-0'>
-                        {menu.name}
-                    </div>
-                </li>
+                <NavLink to={menu.path} key={index} onClick={() => setActiveMenu(index)}>
+                    <li className={`flex gap-1 items-center cursor-pointer px-1 py-1 relative group rounded-lg ${activeMenu === index ? 'bg-blue-400 hover:bg-blue-500 hover:text-white' : 'hover:bg-blue-500 hover:text-white'}`}>
+                        {React.createElement(menu.icon, {color: menu.color, size: 25})}
+                        <div className='absolute rounded-md px-2 py-1 ml-10 bg-blue-400 flex-nowrap font-medium z-50 invisible opacity-10 translate-x-1 transition-all group-hover:visible group-hover:opacity-100 group-hover:z-50 group-hover:translate-x-0'>
+                            {menu.name}
+                        </div>
+                    </li>
+                </NavLink>
+                
             ))}
         </ul>
 
