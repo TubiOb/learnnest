@@ -14,6 +14,7 @@ const FieldRegistrationLayout = ({ role }) => {
     role = queryParams.get('role');
 
     const [courseCount, setCourseCount] = useState(0);
+    const [regCourseCount, setRegCourseCount] = useState(0);
   
   
     const handleProgramChange = (value) => {
@@ -84,6 +85,24 @@ const FieldRegistrationLayout = ({ role }) => {
 
 
 
+    const fetchCoursesCount = async () => {
+        try {
+            const querySnapshot = await getDocs(collection(firestore, 'Courses'));
+            const coursesCount = querySnapshot.size;
+            // Update the state or variable with the course count
+            setRegCourseCount(coursesCount);
+        } catch (error) {
+            console.error('Error fetching course count:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchCoursesCount();
+    }, []);
+
+
+
+
           //   CONFIGURING TOAST TO TOAST MESSAGE
       const showToastMessage = (message, type) => {
         switch (type) {
@@ -134,7 +153,7 @@ const FieldRegistrationLayout = ({ role }) => {
             <Text as='h4' fontSize={['lg', 'xl', '2xl']} fontWeight='semibold'>Summary</Text>
             <div className='flex flex-col items-start justify-start text-left gap-1'>
                 <Text as='p' fontSize={['xs', 'sm', 'base']} fontWeight='semibold' gap='2'>Field(s) of study: <Text as='span' fontSize={['sm', 'md', 'md']}>{courseCount}</Text></Text>
-                <Text as='p' fontSize={['xs', 'sm', 'base']} fontWeight='semibold' gap='2'>Number of courses: <Text as='span' fontSize={['sm', 'md', 'md']}>0</Text></Text>
+                <Text as='p' fontSize={['xs', 'sm', 'base']} fontWeight='semibold' gap='2'>Number of courses: <Text as='span' fontSize={['sm', 'md', 'md']}>{regCourseCount}</Text></Text>
                 <Text as='p' fontSize={['xs', 'sm', 'base']} fontWeight='semibold' gap='2'>Number of Students: <Text as='span' fontSize={['sm', 'md', 'md']}>0</Text></Text>
             </div>
           </div>

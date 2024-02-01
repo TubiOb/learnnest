@@ -40,13 +40,6 @@ const SignupForm = () => {
         }));
     };
 
-    const handleInstitutionChange = (value) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            institution: value,
-        }));
-    };
-
     const handlePasswordChange = (value) => {
         setFormData((prevData) => ({
             ...prevData,
@@ -78,7 +71,7 @@ const SignupForm = () => {
     const handleCourseChange = (value) => {
         setFormData((prevData) => ({
             ...prevData,
-            course: value,
+            programName: value,
         }));
     }
 
@@ -89,8 +82,7 @@ const SignupForm = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        course: '',
-        institution: '',
+        programName: '',
         phoneNumber: '',
         dateOfBirth: '',
         address: '',
@@ -191,7 +183,6 @@ const SignupForm = () => {
                             username: getFirstName(formData.name),
                             email: formData.email,
                             phoneNumber: formData.phoneNumber,
-                            institution: formData.institution,
                             gender: formData.gender,
                             userImage: DefaultImage,
                             staffID: staffID,
@@ -204,10 +195,9 @@ const SignupForm = () => {
                             email: formData.email,
                             phoneNumber: formData.phoneNumber,
                             address: formData.address,
-                            institution: formData.institution,
                             gender: formData.gender,
                             dateOfBirth: formData.dateOfBirth,
-                            course: formData.course,
+                            programName: formData.programName,
                             studentID: studentID,
                             userImage: DefaultImage,
                         });
@@ -223,8 +213,7 @@ const SignupForm = () => {
                         setFormData ({
                             name: '',
                             email: '',
-                            course: '',
-                            institution: '',
+                            programName: '',
                             phoneNumber: '',
                             dateOfBirth: '',
                             address: '',
@@ -246,7 +235,6 @@ const SignupForm = () => {
                         name: '',
                         email: '',
                         course: '',
-                        institution: '',
                         phoneNumber: '',
                         dateOfBirth: '',
                         address: '',
@@ -261,8 +249,7 @@ const SignupForm = () => {
                 setFormData ({
                     name: '',
                     email: '',
-                    course: '',
-                    institution: '',
+                    programName: '',
                     phoneNumber: '',
                     dateOfBirth: '',
                     address: '',
@@ -389,7 +376,6 @@ const SignupForm = () => {
                             <CustomInput type="text" label="Full Name" placeholder="Full Name" value={formData.name} onChange={handleNameChange} />
                             <CustomInput type="email" label="Email" placeholder="Email" value={formData.email} onChange={handleEmailChange} />
                             <CustomInput type="tel" label="Phone Number" placeholder="Phone Number" value={formData.phoneNumber} onChange={handlePhoneChange} />
-                            <CustomInput type="text" label="Name of Institution" placeholder="Name of Institution" value={formData.institution} onChange={handleInstitutionChange} />
                             <CustomRadioInput label='Gender' options={genderOptions} value={formData.gender} onChange={handleSelectedChange} />
                             <CustomInput type="password" label="Password" placeholder="Password" value={formData.password} onChange={handlePasswordChange} />
                         </React.Fragment>
@@ -402,8 +388,7 @@ const SignupForm = () => {
                             <CustomInput type="email" label="Email" placeholder="Email" value={formData.email} onChange={handleEmailChange} />
                             <CustomInput type="tel" label="Phone Number" placeholder="Phone Number" value={formData.phoneNumber} onChange={handlePhoneChange} />
                             <CustomInput type="address" label="Address" placeholder="Address" value={formData.address} onChange={handleAddressChange} />
-                            <CustomInput type="text" label="Name of Institution" placeholder="Name of Institution" value={formData.institution} onChange={handleInstitutionChange} />
-                            <CustomInput type="text" label="Course" placeholder="Course" value={formData.course} onChange={handleCourseChange} />
+                            <CustomInput type="text" label="Program" placeholder="Program" value={formData.programName} onChange={handleCourseChange} />
                             <CustomInput type="date" label="" placeholder="Date of birth" value={formData.dateOfBirth} onChange={handleDoBChange} />
                             <CustomRadioInput label='Gender' options={genderOptions} value={formData.gender} onChange={handleSelectedChange} />
                             <CustomInput type="password" label="Password" placeholder="Password" value={formData.password} onChange={handlePasswordChange} />

@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import CustomInput from '../components/CustomInput';
 import { Text } from '@chakra-ui/react';
-import { RiAddLine } from "react-icons/ri";
-import { IoRemoveSharp } from "react-icons/io5";
 import { addDoc, collection, getDocs } from 'firebase/firestore';
 import { firestore } from '../Firebase';
 import { toast } from 'sonner'
@@ -127,7 +125,7 @@ const AddCourseLayouts = ({ role }) => {
 
 
 
-      const fetchCourseCount = async () => {
+    const fetchCourseCount = async () => {
         try {
             const querySnapshot = await getDocs(collection(firestore, 'Courses'));
             const courseCount = querySnapshot.size;
@@ -136,35 +134,6 @@ const AddCourseLayouts = ({ role }) => {
         } catch (error) {
             console.error('Error fetching course count:', error);
         }
-    };
-
-
-
-
-        //   ADDING NEW DYNAMIC COURSE DETAILS DIVS
-    const handleAddCourse = async (e) => {
-        e.preventDefault();
-
-        try {
-                // Create a new course details div
-            const newCourseDetailsDiv = (
-                <div key={index} className='course details flex flex-row items-center justify-between w-full gap-2'>
-                    <CustomInput type="text" label="Course Name" placeholder="Course Name" value={formData.courseName} onChange={handleCourseNameChange} />
-                    <CustomInput type="text" label="Course Code" placeholder="Course Code" value={formData.courseNo} onChange={handleCourseCodeChange} />
-                    <button onClick={(e) => handleRemoveCourse(index, e)} className='p-0.5 rounded-md shadow-sm bg-white text-red-600 dark:bg-red-600 dark:text-white hover:scale-110'><IoRemoveSharp size='20' /></button>
-                </div>
-            );
-
-            addCourseToArray();
-            setFormData({ ...formData, courseName: '', courseNo: '' });
-            setCourseDetails((prevCourseDetails) => [...prevCourseDetails, newCourseDetailsDiv]);
-                // Increment the index for the next newCourseDetailsDiv
-            setIndex((index) => index + 1);
-        }
-        catch (err) {
-            console.log(err.message);
-        }
-        
     };
 
 
@@ -181,16 +150,16 @@ const AddCourseLayouts = ({ role }) => {
 
 
 
-        //   REMOVING THE DYNAMIC COURSE DETAILS DIVS
-    const handleRemoveCourse = (indexToRemove, e) => {
-        e.preventDefault();
+    //     //   REMOVING THE DYNAMIC COURSE DETAILS DIVS
+    // const handleRemoveCourse = (indexToRemove, e) => {
+    //     e.preventDefault();
 
-        setCourseDetails((prevCourseDetails) => {
-          const updatedCourseDetails = [...prevCourseDetails];
-          updatedCourseDetails.splice(indexToRemove, 1);
-          return updatedCourseDetails;
-        });
-      }
+    //     setCourseDetails((prevCourseDetails) => {
+    //       const updatedCourseDetails = [...prevCourseDetails];
+    //       updatedCourseDetails.splice(indexToRemove, 1);
+    //       return updatedCourseDetails;
+    //     });
+    //   }
 
 
 
@@ -258,6 +227,13 @@ const AddCourseLayouts = ({ role }) => {
             await Promise.all(courseDataArray.map(async (courseDetail) => {
                 await addDoc(collection(firestore, 'Courses'), courseDetail);
             }));
+
+            addCourseToArray();
+            setFormData({ ...formData, courseName: '', courseNo: '' });
+            setCourseDetails((prevCourseDetails) => [...prevCourseDetails]);
+                // Increment the index for the next newCourseDetailsDiv
+            setIndex((index) => index + 1);
+
                 // Update course count after successful save
             await fetchCourseCount();
 
@@ -266,7 +242,6 @@ const AddCourseLayouts = ({ role }) => {
                 //   RESETTING THE FORM
                 setFormData ({
                     programName: '',
-                    search: '',
                     courseName: '',
                     courseNo: '',
                 });
@@ -343,7 +318,7 @@ const AddCourseLayouts = ({ role }) => {
                                 <div key={index} className='flex flex-row items-center justify-between w-full gap-2'>
                                     <CustomInput type="text" label="Course Name" placeholder="Course Name" value={formData.courseName} onChange={handleCourseNameChange} />
                                     <CustomInput type="text" label="Course Code" placeholder="Course Code" value={formData.courseNo} onChange={handleCourseCodeChange} />
-                                    <button onClick={handleAddCourse} className='p-0.5 rounded-md shadow-sm bg-white text-blue-600 dark:bg-blue-600 dark:text-white hover:scale-110'><RiAddLine size='20' /></button>
+                                    {/* <button onClick={handleAddCourse} className='p-0.5 rounded-md shadow-sm bg-white text-blue-600 dark:bg-blue-600 dark:text-white hover:scale-110'><RiAddLine size='20' /></button> */}
                                 </div>
                             </div>
                             {courseDetails}

@@ -17,6 +17,7 @@ const TeacherLayout = ({ role }) => {
 
   const [isPasswordGenerated, setIsPasswordGenerated] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [count, setCount] = useState(0);
 
   const handleNameChange = (value) => {
     setFormData((prevData) => ({
@@ -167,6 +168,7 @@ const TeacherLayout = ({ role }) => {
 
           showToastMessage('Sign Up Successful', 'success');
 
+          fetchLecturerCount();
           
           setTimeout(() => {
               //   RESETTING THE FORM
@@ -280,6 +282,26 @@ const TeacherLayout = ({ role }) => {
   
     return password;
   }
+
+
+
+
+
+
+  const fetchLecturerCount = async () => {
+      try {
+          const querySnapshot = await getDocs(collection(firestore, 'Lecturer'));
+          const lecturerCount = querySnapshot.size;
+          // Update the state or variable with the course count
+          setCount(lecturerCount);
+      } catch (error) {
+          console.error('Error fetching course count:', error);
+      }
+  };
+
+  useEffect(() => {
+    fetchLecturerCount();
+  }, []);
   
 
 
@@ -347,7 +369,7 @@ const TeacherLayout = ({ role }) => {
           <div className='flex flex-col w-[90%] lg:w-[80%] justify-start h-auto mx-auto py-2 px-2 gap-3 text-center bg-gray-600 text-white dark:bg-white dark:text-blue-600 rounded-md'>
             <Text as='h4' fontSize={['lg', 'xl', '2xl']} fontWeight='semibold'>Summary</Text>
             <div className='flex flex-col items-start justify-start text-left gap-1'>
-                <Text as='p' fontSize={['xs', 'sm', 'base']} fontWeight='semibold'>Number of lecturers: <Text as='span' fontSize={['sm', 'md', 'md']}>0</Text></Text>
+                <Text as='p' fontSize={['xs', 'sm', 'base']} fontWeight='semibold'>Number of lecturers: <Text as='span' fontSize={['sm', 'md', 'md']}>{count}</Text></Text>
             </div>
           </div>
         </div>
