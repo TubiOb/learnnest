@@ -82,14 +82,14 @@ const AddCourseLayouts = ({ role }) => {
 
 
     useEffect(() => {
-    // Initialize courseDataArray with default course details when the component mounts
-    const defaultCourseDetails = {
-        courseName: '',
-        courseNo: '',
-        programName: '',
-    };
-    setCourseDataArray([defaultCourseDetails]);
-    }, []);
+            // Initialize courseDataArray with default course details when the component mounts
+        const defaultCourseDetails = {
+            courseName: formData.courseName,
+            courseNo: formData.courseNo,
+            programName: search,
+        };
+        setCourseDataArray([defaultCourseDetails]);
+    }, [search, formData.courseName, formData.courseNo]);
 
 
 
@@ -137,26 +137,6 @@ const AddCourseLayouts = ({ role }) => {
             console.error('Error fetching course count:', error);
         }
     };
-
-
-
-
-    const addCourseToArray = () => {
-        const newCourseDetails = {
-            courseName: formData.courseName,
-            courseNo: formData.courseNo,
-            programName: selectedInput,
-        };
-
-        if (index === 0) {
-            setCourseDataArray([newCourseDetails]);
-        } 
-        else {
-            setCourseDataArray((prevCourseDataArray) => [...prevCourseDataArray, newCourseDetails]);
-        }
-
-        setAllCourses((prevAllCourses) => [...prevAllCourses, newCourseDetails]);
-    }
 
 
 
@@ -219,11 +199,11 @@ const AddCourseLayouts = ({ role }) => {
         setSearch(course.programName);
         try {
             if (course.programName.toLowerCase() === selectedInput.toLowerCase()) {
-                setSearch(course);
+                setSearch(course.programName);
                 setSelectedInput(course.programName);
             }
     
-            setSelectedCourse(course);
+            setSelectedCourse(course.programName);
     
             setFilteredCourses((prevFilteredCourses) =>
                 prevFilteredCourses.filter((c) => c !== course)
@@ -234,6 +214,28 @@ const AddCourseLayouts = ({ role }) => {
             showToastMessage('Error saving course', 'error');
         }
     };
+
+
+
+
+
+    const addCourseToArray = () => {
+        const newCourseDetails = {
+            courseName: formData.courseName,
+            courseNo: formData.courseNo,
+            programName: selectedInput,
+        };
+
+        if (index === 0) {
+            setCourseDataArray([newCourseDetails]);
+        } 
+        else {
+            setCourseDataArray((prevCourseDataArray) => [...prevCourseDataArray, newCourseDetails]);
+        }
+
+        setAllCourses((prevAllCourses) => [...prevAllCourses, newCourseDetails]);
+    }
+    
 
 
 
