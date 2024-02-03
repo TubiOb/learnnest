@@ -15,6 +15,8 @@ import StudentLayout from './layouts/StudentLayout';
 import CourseRegistrationLayout from './layouts/CourseRegistrationLayout';
 import FieldRegistrationLayout from './layouts/FieldRegistrationLayout';
 import AddCourseLayouts from './layouts/AddCourseLayouts';
+import AssignmentsLayouts from './layouts/AssignmentsLayouts';
+import TestsLayout from './layouts/TestsLayout';
 
 function App({ role }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +35,8 @@ function App({ role }) {
           <Route path={`courses`} element={<CourseRegistrationLayout role={role} />} />
           <Route path={'register-study-course'} element={<FieldRegistrationLayout role={role} />} />
           <Route path={'subjects'} element={<AddCourseLayouts role={role} />} />
+          <Route path={'assignments'} element={<AssignmentsLayouts role={role} />} />
+          <Route path={'tests'} element={<TestsLayout role={role} />} />
         </Route>
       </Route>
     )

@@ -56,7 +56,6 @@ const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange }) => {
 
                 return { id: course.courseNo, ...course };
             });
-            console.log(courseData);
             setCourses(courseData);
         }
         catch (err) {
@@ -75,8 +74,8 @@ const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange }) => {
         setCheckedItems(newCheckedItems);
 
         const selectedCourseNames = newCheckedItems
-            .map((isChecked, i) => isChecked ? courses[i].courseName : null)
-            .filter((courseName) => courseName !== null);
+            .map((isChecked, i) => isChecked ? { courseName: courses[i].courseName, courseNo: courses[i].courseNo } : null)
+            .filter((course) => course !== null);
 
         onChange({ checkedItems: newCheckedItems, selectedCourseNames });
     };
@@ -92,9 +91,9 @@ const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange }) => {
 
   return (
     <CheckboxGroup alignItems='center' justifyContent='center' flexWrap="wrap">
-        <Stack spacing={['1', '3']} direction='row' py='2' px={['1.5', '3']} flexWrap="wrap">
+        <Stack spacing={['2', '4']} direction='row' py='2' px={['1.5', '3']} flexWrap="wrap">
             {courses.map((course, index) => (
-                <Checkbox key={course.id} isChecked={checkedItems[index]} onChange={() => handleCheckboxChange(index)}>{course.courseName}</Checkbox>
+                <Checkbox key={course.id} isChecked={checkedItems[index]} colorScheme='green' onChange={() => handleCheckboxChange(index)}>{course.courseName}</Checkbox>
             ))}
             
         </Stack>

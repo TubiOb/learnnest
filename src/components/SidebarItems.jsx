@@ -47,7 +47,7 @@ const SidebarItems = ({ role }) => {
             { name: 'Dashboard', icon: LuLayoutDashboard, active: true, path: (`/dashboard?role=${role}`) },
             { name: 'Courses', icon: SiGoogleclassroom, active: false, path: (`courses?role=${role}`) },
             { name: 'Students', icon: PiStudentDuotone, active: false, path: (`students?role=${role}`) },
-            { name: 'Assignment', icon: MdAssignment, active: false, path: '' },
+            { name: 'Assignment', icon: MdAssignment, active: false, path: (`assignments?role=${role}`) },
             { name: 'Test', icon: SiTestcafe, active: false, path: '' },
             { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
         ];
@@ -56,7 +56,7 @@ const SidebarItems = ({ role }) => {
         sidebarMenus = [
             { name: 'Dashboard', icon: LuLayoutDashboard, active: true, path: (`/dashboard?role=${role}`) },
             { name: 'Course Registration', icon: GiArchiveRegister, active: false, path: (`courses?role=${role}`) },
-            { name: 'Assignment', icon: MdAssignment, active: false, path: '' },
+            { name: 'Assignment', icon: MdAssignment, active: false, path: (`assignments?role=${role}`) },
             { name: 'Test', icon: SiTestcafe, active: false, path: '' },
             { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
             { name: 'Fees Payments', icon: MdPayments, active: false, path: '' },

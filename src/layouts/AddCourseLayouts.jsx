@@ -294,7 +294,7 @@ const AddCourseLayouts = ({ role }) => {
 
 
   return (
-    <div className='flex items-center justify-center w-full h-screen'>
+    <div className='flex items-center justify-center w-full h-full lg:h-screen'>
       <div className='flex flex-col lg:flex-row items-center justify-between w-full h-[100%] py-4 px-2 gap-4 lg:gap-0'>
         {role === 'admin' && (
             <React.Fragment>
@@ -306,7 +306,7 @@ const AddCourseLayouts = ({ role }) => {
                         {search && filteredCourses.length > 0 && (
                             <ul className='bg-blue-100 w-full py-1.5 px-2 -mt-5 rounded-lg text-left gap-0.5'>
                                 {filteredCourses.map((course, index) => (
-                                    <li key={index} onClick={() => handleSelectCourse(course)} className='cursor-pointer'>
+                                    <li key={index} onClick={() => handleSelectCourse(course)} className='cursor-pointer hover:text-blue-400 hover:bg-white'>
                                         {course.programName}
                                     </li>
                                 ))}
