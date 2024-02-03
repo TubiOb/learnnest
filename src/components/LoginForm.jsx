@@ -65,7 +65,7 @@ const LoginForm = () => {
                 userDocRef = doc(firestore, `Admin/${userId}`);
             }
             else if (role === 'teacher') {
-                userDocRef = doc(firestore, `Teacher/${userId}`);
+                userDocRef = doc(firestore, `Lecturer/${userId}`);
             }
             else if (role === 'student') {
                 userDocRef =  doc(firestore, `Student/${userId}`);

@@ -1,62 +1,70 @@
 import React, { useEffect, useState } from 'react'
 import { Checkbox, CheckboxGroup, Stack } from '@chakra-ui/react'
-import { collection, getDocs } from 'firebase/firestore';
-import { firestore } from '../Firebase';
+import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
+import { auth, firestore } from '../Firebase';
 
 const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange }) => {
     const [courses, setCourses] = useState([]);
+    const [currentUser, setCurrentUser] = useState('');
+    // eslint-disable-next-line
+    const [currentUserId, setCurrentUserId] = useState('');
+    const [userCourse, setUserCourse] = useState('');
+    const [loading, setLoading] = useState(true);
 
          //   GETTING CURRENT USER
-    // useEffect(() => {
-    //     const loggedInUser = auth.onAuthStateChanged( async (user) => {
-    //         if (user) {
-    //             let  userUID = user.uid;
+    useEffect(() => {
+        const loggedInUser = auth.onAuthStateChanged( async (user) => {
+            if (user) {
+                let  userUID = user.uid;
 
-    //             setCurrentUserId(userUID);
-    //             const userDocRef = doc(firestore, 'User', userUID);
-               
-    //             try {
-    //                 console.log(userDocRef);
-    //                 const userData = await getDoc(userDocRef);
-    //                 console.log(userData);
+                setCurrentUserId(userUID);
+                const userDocRef = doc(firestore, `Student`, userUID);
+                try {
+                    console.log(userDocRef);
+                    const userData = await getDoc(userDocRef);
 
-    //                 if (userData.exists()) {
-    //                     const userInfo = userData.data();
-    //                     console.log(userInfo)
+                    if (userData.exists()) {
+                        const userInfo = userData.data();
 
-    //                     if (userInfo) {
-    //                         const loggedUser = userInfo.username;
-    //                         const usersCourse = userInfo.programName;
-    //                         setCurrentUser(loggedUser)
-    //                         setUserCourse(usersCourse);
-    //                         console.log(loggedUser)
-    //                     }
-    //                 }
-    //             }
-    //             catch (err) {
-    //                 console.error('Error fetching user data:', err);
-    //             }
-    //         }
-    //         else {
-    //             setCurrentUser('')
-    //             setCurrentUserId('')
-    //         }
-    //     });
-    //     return () => loggedInUser();
-    // }, []);
+                        if (userInfo) {
+                            const loggedUser = userInfo.username;
+                            const usersCourse = userInfo.programName;
+                            setCurrentUser(loggedUser);
+                            setUserCourse(usersCourse);
+                        }
+                    }
+                }
+                catch (err) {
+                    console.error('Error fetching user data:', err);
+                }
+            }
+            else {
+                setCurrentUser('')
+                // setCurrentUserId('')
+            }
+            console.log(currentUser);
+        });
+        return () => loggedInUser();
+    }, [currentUser]);
+
+
 
 
 
     const fetchCourses = async () => {
         try {
-            const courseRef = await getDocs(collection(firestore, 'Courses'));
+            if (currentUser) {
+                const courseRef = await getDocs(collection(firestore, 'Courses'));
 
-            const courseData = courseRef.docs.map((doc) => {
-                const course = doc.data();
-
-                return { id: course.courseNo, ...course };
-            });
-            setCourses(courseData);
+                const courseData = courseRef.docs
+                    .filter(doc => doc.data().programName === userCourse)
+                    .map((doc) => {
+                        const course = doc.data();
+                        return { id: course.courseNo, ...course };
+                    })
+                    setCourses(courseData);
+                    setLoading(false);
+            }
         }
         catch (err) {
             console.error('Error fetching courses:', err);
@@ -92,10 +100,15 @@ const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange }) => {
   return (
     <CheckboxGroup alignItems='center' justifyContent='center' flexWrap="wrap">
         <Stack spacing={['2', '4']} direction='row' py='2' px={['1.5', '3']} flexWrap="wrap">
-            {courses.map((course, index) => (
-                <Checkbox key={course.id} isChecked={checkedItems[index]} colorScheme='green' onChange={() => handleCheckboxChange(index)}>{course.courseName}</Checkbox>
-            ))}
-            
+        {loading ? (
+            <p className='text-xs md:text-sm lg:text-base xl:text-xl text-blue-600 dark:text-white'>Loading...</p>
+          ) : (
+            <React.Fragment>
+                {courses.map((course, index) => (
+                    <Checkbox key={course.id} isChecked={checkedItems[index]} colorScheme='green' onChange={() => handleCheckboxChange(index)}>{course.courseName}</Checkbox>
+                ))}
+            </React.Fragment>
+          )}
         </Stack>
     </CheckboxGroup>
   )

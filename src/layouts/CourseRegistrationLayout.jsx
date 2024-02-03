@@ -196,7 +196,7 @@ const CourseRegistrationLayout = ({ role }) => {
 
         <div className='w-fit lg:w-[60%] flex py-4 px-3 items-start justify-center h-full'>
           {loading ? (
-            <p className='text-xs md:text-sm lg:text-base xl:text-xl text-green-600'>Loading...</p>
+            <p className='text-xs md:text-sm lg:text-base xl:text-xl text-blue-600 dark:text-white'>Loading...</p>
           ) : (
             <CustomTable columns={columns} data={retrievedCourses} onRowSelect={handleRowSelect} onRowAction={handleRowAction} />
           )}

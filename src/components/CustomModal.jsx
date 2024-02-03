@@ -25,12 +25,11 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        alert(`${formData.name}`);
-        console.log(formData.name);
+        alert(formData.name)
+        if (formData.name) {
+
+        }
         handleCloseModal();
-        setFormData ({
-            name: '',
-        })
     }
 
 
@@ -49,7 +48,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                 <ModalHeader>{modalHeader}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody className='w-full mt-2 flex flex-col justify-between gap-4'>
-                    <form onSubmit={(e) => e.preventDefault()}>
+                    <form onSubmit={handleSubmit}>
                         <CustomInput type="text" label={inputLabel} placeholder={inputPlaceholder} value={formData.name} onChange={handleNameChange} />
                     </form>   
                 </ModalBody>
