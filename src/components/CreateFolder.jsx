@@ -12,23 +12,7 @@ const CreateFolder = () => {
         setIsOpen(false);
     };
 
-    const modalHeader = "Modal Title";
     
-    const modalBody = (
-        <div>
-        {/* Your dynamic content for the modal body */}
-        <p>This is the dynamic content of the modal body.</p>
-        </div>
-    );
-
-    const modalFooter = (
-        <>
-        <Button colorScheme='blue' mr={3} onClick={handleClose}>
-            Close
-        </Button>
-        {/* Additional buttons or elements for the modal footer */}
-        </>
-    );
   return (
     <div className=''>
 

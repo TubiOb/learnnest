@@ -5,6 +5,7 @@ import { FaFileCirclePlus, FaFileArrowUp, FaFolderPlus } from "react-icons/fa6";
 // import { HiMiniFolderArrowDown } from "react-icons/hi2";
 import ShowItems from '../components/ShowItems';
 import CustomModal from './../components/CustomModal';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react'
 
 const AssignmentsLayouts = ({ role }) => {
           // Get role from the query parameters
@@ -52,37 +53,73 @@ const AssignmentsLayouts = ({ role }) => {
   return (
     <div className='flex items-center justify-center w-full h-screen'>
         <div className='flex flex-col items-center w-full h-[100%] py-4 px-2 gap-4 lg:gap-2'>
-        {role === 'teacher' && (
-          <React.Fragment>
-              <div className='w-full items-end flex justify-end gap-3'>
-                  <button type="" onClick={() => handleOpenModal('Upload File', 'File name', 'File name', 'Upload File')} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><FaFileArrowUp /> Upload File</button>
-                  <button type="" onClick={() => handleOpenModal('Create File', 'File name', 'File name', 'Create File')} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><FaFileCirclePlus /> Create File</button>
-                  <button type="" onClick={() => handleOpenModal('Create Folder', 'Folder name', 'Folder name', 'Create Folder')} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><FaFolderPlus /> Create Folder</button>
-                  {/* <button type="" className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><HiMiniFolderArrowDown /> Download Folder</button> */}
-              </div>
+          {role === 'teacher' && (
+            <React.Fragment>
+                <div className='w-full items-end flex justify-end gap-3'>
+                    <button type="" onClick={() => handleOpenModal('Upload File', 'File name', 'File name', 'Upload File')} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><FaFileArrowUp /> Upload File</button>
+                    <button type="" onClick={() => handleOpenModal('Create File', 'File name', 'File name', 'Create File')} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><FaFileCirclePlus /> Create File</button>
+                    <button type="" onClick={() => handleOpenModal('Create Folder', 'Folder name', 'Folder name', 'Create Folder')} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><FaFolderPlus /> Create Folder</button>
+                    {/* <button type="" className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><HiMiniFolderArrowDown /> Download Folder</button> */}
+                </div>
 
-              <hr className='my-3 w-full' />
+                <hr className='my-3 w-full' />
 
-              <ShowItems title={'Created Folders'} items={folders} />
-              <ShowItems title={'Created Files'} items={files} />
-          </React.Fragment>
-            
-        )}
-        {role === 'student' && (
-          <React.Fragment>
-              <div className='w-full flex justify-end gap-3'>
-                  {/* <button type="" onClick={() => handleOpenModal('Download File', <CustomInput type="text" label="" placeholder="" value={''} onChange={''} />, <Button onClick={handleCloseModal}>Download File</Button>)} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><BsFileEarmarkArrowDownFill /> Download File</button> */}
-                  <button type="" onClick={() => handleOpenModal('Upload File', 'File name', 'File name', 'Upload File')} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><FaFileArrowUp /> Upload File</button>
-                  <button type="" onClick={() => handleOpenModal('Create File', 'File name', 'File name', 'Create File')} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><FaFileCirclePlus /> Create File</button>
-              </div>
 
-              <hr className='my-3 w-full' />
+                <div className='flex w-full items-start flex-col'>
+                  <Breadcrumb fontWeight='medium' fontSize='sm' flexDir='column'>
+                    <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
+                      <BreadcrumbLink href='#'>Home</BreadcrumbLink>
+                    </BreadcrumbItem>
 
-              <ShowItems title={'Created Folders'} items={folders} />
-              <ShowItems title={'Created Files'} items={files} />
-          </React.Fragment>
-            
-        )}
+                    <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
+                      <BreadcrumbLink href='#'>About</BreadcrumbLink>
+                    </BreadcrumbItem>
+
+                    <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
+                      <BreadcrumbLink href='#'>Current</BreadcrumbLink>
+                    </BreadcrumbItem>
+                  </Breadcrumb>
+                </div>
+
+
+                <ShowItems title={'Created Folders'} items={folders} />
+                <ShowItems title={'Created Files'} items={files} />
+            </React.Fragment>
+              
+          )}
+          {role === 'student' && (
+            <React.Fragment>
+                <div className='w-full flex justify-end gap-3'>
+                    {/* <button type="" onClick={() => handleOpenModal('Download File', <CustomInput type="text" label="" placeholder="" value={''} onChange={''} />, <Button onClick={handleCloseModal}>Download File</Button>)} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><BsFileEarmarkArrowDownFill /> Download File</button> */}
+                    <button type="" onClick={() => handleOpenModal('Upload File', 'File name', 'File name', 'Upload File')} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><FaFileArrowUp /> Upload File</button>
+                    <button type="" onClick={() => handleOpenModal('Create File', 'File name', 'File name', 'Create File')} className='py-1.5 px-1 lg:px-2.5 border border-neutral-300 rounded-md text-xs lg:text-sm font-medium flex gap-1 items-center hover:bg-white hover:text-blue-600'><FaFileCirclePlus /> Create File</button>
+                </div>
+
+                <hr className='my-3 w-full' />
+
+
+                <div className='flex w-full items-start flex-col'>
+                  <Breadcrumb fontWeight='medium' fontSize='sm' flexDir='column'>
+                    <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
+                      <BreadcrumbLink href='#'>Home</BreadcrumbLink>
+                    </BreadcrumbItem>
+
+                    <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
+                      <BreadcrumbLink href='#'>About</BreadcrumbLink>
+                    </BreadcrumbItem>
+
+                    <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
+                      <BreadcrumbLink href='#'>Current</BreadcrumbLink>
+                    </BreadcrumbItem>
+                  </Breadcrumb>
+                </div>
+
+
+                <ShowItems title={'Created Folders'} items={folders} />
+                <ShowItems title={'Created Files'} items={files} />
+            </React.Fragment>
+              
+          )}
             
         </div>
 
