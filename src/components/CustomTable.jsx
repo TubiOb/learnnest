@@ -54,11 +54,11 @@ const CustomTable = ({ columns, data, onRowSelect }) => {
 
 
   return (
-    <div className='w-full flex flex-col gap-2 py-5 px-3 items-center justify-center'>
+    <div className='w-full flex flex-col gap-2 py-5 px-3 items-center justify-center overflow-x-auto'>
         <CustomInput type='text' label='Search' placeholder='Search' value={searchTerm} onChange={(value) => setSearchTerm(value)} className='text-blue-600' />
 
-        <TableContainer className='w-full border border-neutral-300 rounded-lg'>
-            <Table size="md" variant='simple' colorScheme='blackAlpha table-auto' className='w-fit'>
+        <TableContainer className='trick border border-neutral-300 rounded-lg'>
+            <Table size="md" variant='simple' colorScheme='blackAlpha table-auto' className='trick w-full overflow-x-auto'>
                 <Thead >
                 <Tr className='bg-neutral-400 text-white'>
                     {columns.map((column) => (

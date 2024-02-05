@@ -116,32 +116,33 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
     });
 
 
+
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const documentName = formData.name
-        if (documentName) {
-            if (documentName.length > 3) {
-                let exists = false;
-                let isFolder = false;
-                
-                if (modalHeader.toLowerCase().includes('folder')) {
-                    isFolder = true;
-                    exists = await checkIfFolderExists(documentName);
-                }
-                else {
-                    exists = await checkIfFileExists(documentName);
-                }
+        
+        const folderExists = await checkIfFolderExists(formData.name);
 
-                if (exists) {
-                    alert(`The ${isFolder ? 'folder' : 'file'} with name '${documentName}' already exists.`);
-                }
-                else {
-                    const docRef =  doc(firestore, isFolder ? `Folder` : 'File', documentName);
+        if (folderExists) {
+            alert(`The folder with name '${formData.name}' already exists.`);
+        }
+
+        try {
+            const collectionRef = collection(firestore, 'Folder');
+            const docRef = doc(collectionRef);
+            const docId = docRef.id;
+
+            const documentName = formData.name;
+            if (documentName) {
+                if (documentName.length >= 3) {
                     let document;
+
                     if (role === 'teacher') {
                         document = {
                             createdAt: new Date(),
                             documentName: documentName,
+                            documentId: docId,
                             userId: currentUserId,
                             createdBy: currentUser,
                             path: currentPath,
@@ -153,7 +154,8 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                     else if (role === 'student') {
                         document = {
                             createdAt: new Date(),
-                            documentName: documentName,
+                            documentName: formData.name,
+                            documentId: docId,
                             studentId: currentStudentId,
                             createdBy: currentStudent,
                             path: currentPath,
@@ -162,28 +164,104 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                             department: course,
                         };
                     }
-                    
-                    console.log(document);
+
                     await setDoc(docRef, document);
-                    
 
-
-                    alert(`Successfully created ${isFolder ? 'folder' : 'file'} with name '${documentName}'.`);
+                    alert(`Successfully created file with name '${documentName}'.`);
                 }
-                setFormData({
-                    name: '',
-                })
+                else {
+                    alert('Folder name must be at least 3 chaacters');
+                }
             }
             else {
-                alert('Folder name must be at least 3 chaacters')
+                alert('Please fill in folder name');
             }
         }
-        else {
-            alert('Folder name cannot be empty')
+        catch (err) {
+            alert('Error saving ' + err);
+            console.log('Error saving ' + err);
         }
         
         handleCloseModal();
+    };
+
+
+
+
+
+
+
+    const handleFileSubmit = async (e) => {
+        e.preventDefault();
+
+        const fileExists = await checkIfFileExists(formData.name);
+
+        if (fileExists) {
+            alert(`The file with name '${formData.name}' already exists.`);
+        }
+
+        try {
+            const collectionRef = collection(firestore, 'File');
+            const docRef = doc(collectionRef);
+            const docId = docRef.id;
+
+            const documentName = formData.name;
+            if (documentName) {
+                if (documentName.length >= 3) {
+                    let document;
+
+                    if (role === 'teacher') {
+                        document = {
+                            createdAt: new Date(),
+                            documentName: documentName,
+                            documentId: docId,
+                            userId: currentUserId,
+                            createdBy: currentUser,
+                            path: currentPath,
+                            lastAccessed: null,
+                            updatedAt: new Date(),
+                            department: department,
+                        };
+                    }
+                    else if (role === 'student') {
+                        document = {
+                            createdAt: new Date(),
+                            documentName: formData.name,
+                            documentId: docId,
+                            studentId: currentStudentId,
+                            createdBy: currentStudent,
+                            path: currentPath,
+                            lastAccessed: null,
+                            updatedAt: new Date(),
+                            department: course,
+                        };
+                    }
+
+                    await setDoc(docRef, document);
+
+                    alert(`Successfully created file with name '${documentName}'.`);
+                }
+                else {
+                    alert('File name must be at least 3 chaacters');
+                }
+            }
+            else {
+                alert('Please fill in file name');
+            }
+        }
+        catch (err) {
+            alert('Error saving ' + err);
+            console.log('Error saving ' + err);
+        }
+
+        handleCloseModal();
     }
+
+
+
+
+
+
 
 
     const handleCloseModal = () => {
@@ -197,13 +275,13 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
 
         //   CHECKING IF THE EMAIL HAS ALREADY BEEN REGISTERED
     const checkIfFolderExists = async (name) => {
-        const querySnapshot = await getDocs(collection(firestore, `Folder`), where('folderName', '==', name));
+        const querySnapshot = await getDocs(collection(firestore, `Folder${role}`), where('documentName', '==', name.toLowerCase()));
         return !querySnapshot.empty;
     };
 
 
     const checkIfFileExists = async (name) => {
-        const querySnapshot = await getDocs(collection(firestore, `File${role}`), where('fileName', '==', name));
+        const querySnapshot = await getDocs(collection(firestore, `File${role}`), where('documentName', '==', name.toLowerCase()));
         return !querySnapshot.empty;
     };
 
@@ -223,13 +301,34 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                 <ModalHeader>{modalHeader}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody className='w-full mt-2 flex flex-col justify-between gap-4'>
-                    <form onSubmit={handleSubmit}>
-                        <CustomInput type="text" label={inputLabel} formData={formData} placeholder={inputPlaceholder} value={formData.name} onChange={handleNameChange} />
-                    </form>   
+                    {modalHeader.toLowerCase().includes('folder') && (
+                        <React.Fragment>
+                            <form onSubmit={handleSubmit}>
+                                <CustomInput type="text" label={inputLabel} formData={formData} placeholder={inputPlaceholder} value={formData.name} onChange={handleNameChange} />
+                            </form> 
+                        </React.Fragment>
+                    )}
+                    {modalHeader.toLowerCase().includes('file') && (
+                        <React.Fragment>
+                            <form onSubmit={handleFileSubmit}>
+                                <CustomInput type="text" label={inputLabel} formData={formData} placeholder={inputPlaceholder} value={formData.name} onChange={handleNameChange} />
+                            </form> 
+                        </React.Fragment>
+                    )}
+                      
                 </ModalBody>
 
                 <ModalFooter>
-                    <Button colorScheme='blue' mr={3} onClick={handleSubmit}>{buttonName}</Button>
+                    {modalHeader.toLowerCase().includes('folder') && (
+                        <React.Fragment>
+                            <Button colorScheme='blue' mr={3} onClick={handleSubmit}>{buttonName}</Button>
+                        </React.Fragment>
+                    )}
+                    {modalHeader.toLowerCase().includes('file') && (
+                        <React.Fragment>
+                            <Button colorScheme='blue' mr={3} onClick={handleFileSubmit}>{buttonName}</Button>
+                        </React.Fragment>
+                    )}
                 </ModalFooter>
             </ModalContent>
         </Modal>

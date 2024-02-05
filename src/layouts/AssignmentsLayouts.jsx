@@ -13,8 +13,8 @@ const AssignmentsLayouts = ({ role }) => {
       const queryParams = new URLSearchParams(location.search);
       role = queryParams.get('role');
 
-      const folders = [{ name: 'New Folder' }, { name: 'New folder 2' }];
-      const files = [{ name: 'New File' }, { name: 'New file 2' }];
+      const folders = [{ name: 'New Folder', type: 'folder' }, { name: 'New folder 2', type: 'folder' }];
+      const files = [{ name: 'New File', type: 'file' }, { name: 'New file 2', type: 'file' }];
 
           // eslint-disable-next-line
       const [foldersData, setFoldersData] = useState([]);
@@ -55,7 +55,7 @@ const AssignmentsLayouts = ({ role }) => {
 
 
   return (
-    <div className='flex items-center justify-center w-full h-screen'>
+    <div className='flex items-center justify-center w-full h-full lg:h-screen'>
         <div className='flex flex-col items-center w-full h-[100%] py-4 px-2 gap-4 lg:gap-2'>
           {role === 'teacher' && (
             <React.Fragment>
@@ -86,8 +86,8 @@ const AssignmentsLayouts = ({ role }) => {
                 </div>
 
 
-                <ShowItems title={'Created Folders'} items={folders} foldersData={foldersData} />
-                <ShowItems title={'Created Files'} items={files} filesData={filesData} />
+                <ShowItems title={'Created Folders'} items={folders.filter(item => item.type === 'folder')} foldersData={foldersData} />
+                <ShowItems title={'Created Files'} items={files.filter(item => item.type === 'file')} filesData={filesData} />
             </React.Fragment>
               
           )}
@@ -119,8 +119,7 @@ const AssignmentsLayouts = ({ role }) => {
                 </div>
 
                
-                <ShowItems title={'Created Files'} items={files} filesData={filesData} />
-                
+                <ShowItems title={'Created Files'} items={files.filter(item => item.type === 'file')} filesData={filesData} />
             </React.Fragment>
               
           )}

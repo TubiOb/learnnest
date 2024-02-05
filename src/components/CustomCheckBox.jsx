@@ -2,8 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { Checkbox, CheckboxGroup, Stack } from '@chakra-ui/react'
 import { collection, doc, getDoc, getDocs } from 'firebase/firestore';
 import { auth, firestore } from '../Firebase';
+import { useLocation } from 'react-router-dom'
 
-const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange }) => {
+const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange, role }) => {
+        // Get role from the query parameters
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    role = queryParams.get('role');
+
+
     const [courses, setCourses] = useState([]);
     const [currentUser, setCurrentUser] = useState('');
     // eslint-disable-next-line
@@ -50,26 +57,30 @@ const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange }) => {
 
 
 
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                if (currentUser) {
+                    const courseRef = await getDocs(collection(firestore, 'Courses'));
 
-    const fetchCourses = async () => {
-        try {
-            if (currentUser) {
-                const courseRef = await getDocs(collection(firestore, 'Courses'));
-
-                const courseData = courseRef.docs
-                    .filter(doc => doc.data().programName === userCourse)
-                    .map((doc) => {
-                        const course = doc.data();
-                        return { id: course.courseNo, ...course };
-                    })
-                    setCourses(courseData);
-                    setLoading(false);
+                    const courseData = courseRef.docs
+                        .filter(doc => doc.data().programName === userCourse)
+                        .map((doc) => {
+                            const course = doc.data();
+                            return { id: course.courseNo, ...course };
+                        })
+                        setCourses(courseData);
+                        setLoading(false);
+                }
             }
-        }
-        catch (err) {
-            console.error('Error fetching courses:', err);
-        }
-    };
+            catch (err) {
+                console.error('Error fetching courses:', err);
+            }
+        };
+   
+        fetchCourses();
+        // eslint-disable-next-line
+    }, [])
 
 
 
@@ -92,23 +103,29 @@ const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange }) => {
 
 
 
-    useEffect(() => {
-        fetchCourses();
-        // eslint-disable-next-line
-    }, [])
+    
 
   return (
     <CheckboxGroup alignItems='center' justifyContent='center' flexWrap="wrap">
         <Stack spacing={['2', '4']} direction='row' py='2' px={['1.5', '3']} flexWrap="wrap">
-        {loading ? (
-            <p className='text-xs md:text-sm lg:text-base xl:text-xl text-blue-600 dark:text-white'>Loading...</p>
-          ) : (
-            <React.Fragment>
-                {courses.map((course, index) => (
-                    <Checkbox key={course.id} isChecked={checkedItems[index]} colorScheme='green' onChange={() => handleCheckboxChange(index)}>{course.courseName}</Checkbox>
-                ))}
-            </React.Fragment>
-          )}
+            {role === 'student' && (
+                <React.Fragment>
+                    {loading ? (
+                        <p className='text-xs md:text-sm lg:text-base xl:text-xl text-blue-600 dark:text-white'>Loading...</p>
+                    ) : (
+                        <React.Fragment>
+                            {courses.map((course, index) => (
+                                <Checkbox key={course.id} isChecked={checkedItems[index]} colorScheme='green' onChange={() => handleCheckboxChange(index)}>{course.courseName}</Checkbox>
+                            ))}
+                        </React.Fragment>
+                    )}
+                </React.Fragment>
+            )}
+            {role === 'teacher' && (
+                <React.Fragment>
+                    
+                </React.Fragment>
+            )}
         </Stack>
     </CheckboxGroup>
   )

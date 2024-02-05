@@ -141,133 +141,130 @@ const DashboardLayout = ({ role }) => {
 
 
 
-
-  const fetchLecturerCount = async () => {
-      try {
-        if (currentUser && currentUserId) {
-          const lecturerRef = doc(firestore, 'Lecturer', currentUserId);
-          const lecturerDoc = await getDocs(lecturerRef);
-
-          if (lecturerDoc.exists()) {
-            const lecturerInfo = lecturerDoc.data();
-            const department = lecturerInfo.department;
-
-            if (department) {
-              const coursesQuerySnapshot = await getDocs(collection(firestore, 'Courses'), where('programName', '==', department));
-              const studentsQuerySnapshot = await getDocs(collection(firestore, 'Student'), where('programName', '==', department));
-
-              const courseCount = coursesQuerySnapshot.size;
-              const studentCount = studentsQuerySnapshot.size;
-
-              setLecturerCourseCount(courseCount);
-              setLecturerStudentCount(studentCount);
-            }
-          };
-        }
-      } catch (error) {
-          console.error('Error fetching course count:', error);
-      }
-  };
-
-
-
-
-  const fetchStudentCount = async () => {
-    try {
-      if (currentStudent && currentStudentId) {
-        const studentRef = doc(firestore, 'Student', currentStudentId);
-        const studentDoc = await getDoc(studentRef);
-
-        if (studentDoc.exists()) {
-          const studentInfo = studentDoc.data();
-          const course = studentInfo.programName;
-
-          if (course) {
-            const coursesQuerySnapshot = await getDocs(collection(firestore, 'Courses'), where('programName', '==', course));
-            const lecturerQuerySnapshot = await getDocs(collection(firestore, 'Lecturer'), where('department', '==', course));
-          
-            const courseCount = coursesQuerySnapshot.size;
-            const lecturerCount = lecturerQuerySnapshot.size;
-
-            setStudentCourseCount(courseCount);
-            setStudentLecturerCount(lecturerCount);
-          }
-        }
-      } 
-    } catch (error) {
-        console.error('Error fetching course count:', error);
-    }
-  };
-
-
-
-
   useEffect(() => {
+    const fetchLecturerCount = async () => {
+        try {
+          if (currentUser && currentUserId) {
+            const lecturerRef = doc(firestore, 'Lecturer', currentUserId);
+            const lecturerDoc = await getDoc(lecturerRef);
+
+            if (lecturerDoc.exists()) {
+              const lecturerInfo = lecturerDoc.data();
+              const department = lecturerInfo.department;
+
+              if (department) {
+                const coursesQuerySnapshot = await getDocs(collection(firestore, 'Courses'), where('programName', '==', department));
+                const studentsQuerySnapshot = await getDocs(collection(firestore, 'Student'), where('programName', '==', department));
+
+                const courseCount = coursesQuerySnapshot.size;
+                const studentCount = studentsQuerySnapshot.size;
+
+                setLecturerCourseCount(courseCount);
+                setLecturerStudentCount(studentCount);
+              }
+            };
+          }
+        } catch (error) {
+            console.error('Error fetching course count:', error);
+        }
+    };
+  
     fetchLecturerCount();
     // eslint-disable-next-line
   }, []);
 
 
+
+
   useEffect(() => {
+    const fetchStudentCount = async () => {
+      try {
+        if (currentStudent && currentStudentId) {
+          const studentRef = doc(firestore, 'Student', currentStudentId);
+          const studentDoc = await getDoc(studentRef);
+
+          if (studentDoc.exists()) {
+            const studentInfo = studentDoc.data();
+            const course = studentInfo.programName;
+
+            if (course) {
+              const coursesQuerySnapshot = await getDocs(collection(firestore, 'Courses'), where('programName', '==', course));
+              const lecturerQuerySnapshot = await getDocs(collection(firestore, 'Lecturer'), where('department', '==', course));
+            
+              const courseCount = coursesQuerySnapshot.size;
+              const lecturerCount = lecturerQuerySnapshot.size;
+
+              setStudentCourseCount(courseCount);
+              setStudentLecturerCount(lecturerCount);
+            }
+          }
+        } 
+      } catch (error) {
+          console.error('Error fetching course count:', error);
+      }
+    };
+
     fetchStudentCount();
     // eslint-disable-next-line
   }, []);
 
 
 
-  const fetchCourseCount = async () => {
-      try {
-          const querySnapshot = await getDocs(collection(firestore, 'Course of Study'));
-          const courseCount = querySnapshot.size;
-          // Update the state or variable with the course count
-          setCourseCount(courseCount);
-      } catch (error) {
-          console.error('Error fetching course count:', error);
-      }
-  };
-
-  const fetchAdminStudentCount = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(firestore, 'Student'));
-      const count = querySnapshot.size;
-
-      setStudentCount(count);
-    }
-    catch (err) {
-      console.error('Error fetching student count:', err);
-    }
-  };
-
-
-
-  const fetchAdminLecturerCount = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(firestore, 'Lecturer'));
-      const count = querySnapshot.size;
-
-      setLecturerCount(count);
-    }
-    catch (err) {
-      console.log('Error fetching lecturer count', err);
-    }
-  }
-
-
-
-
   useEffect(() => {
+    const fetchCourseCount = async () => {
+        try {
+            const querySnapshot = await getDocs(collection(firestore, 'Course of Study'));
+            const courseCount = querySnapshot.size;
+            // Update the state or variable with the course count
+            setCourseCount(courseCount);
+        } catch (error) {
+            console.error('Error fetching course count:', error);
+        }
+    };
+  
     fetchCourseCount();
   }, []);
 
 
+
+  
   useEffect(() => {
+    const fetchAdminStudentCount = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(firestore, 'Student'));
+        const count = querySnapshot.size;
+
+        setStudentCount(count);
+      }
+      catch (err) {
+        console.error('Error fetching student count:', err);
+      }
+    };
+  
     fetchAdminStudentCount();
   }, []);
 
 
+
+
   useEffect(() => {
+    const fetchAdminLecturerCount = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(firestore, 'Lecturer'));
+        const count = querySnapshot.size;
+
+        setLecturerCount(count);
+      }
+      catch (err) {
+        console.log('Error fetching lecturer count', err);
+      }
+    };
+ 
     fetchAdminLecturerCount();
   }, []);
+
+
+  
 
 
 

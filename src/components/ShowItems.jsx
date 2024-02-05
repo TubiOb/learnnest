@@ -21,6 +21,7 @@ const ShowItems = ({ title, role }) => {
       const [course, setCourse] = useState('');
       const [loading, setLoading] = useState(true);
       const [foldersData,setFoldersData] = useState([]);
+      const [teacherFilesData, setTeacherFilesData] = useState([]);
       const [filesData, setFilesData] = useState([]);
 
 
@@ -97,66 +98,65 @@ const ShowItems = ({ title, role }) => {
 
 
 
+      useEffect(() => {
+        const fetchFilesAndFolders = async () => {
+          try {
+            let foldersData = [];
+            let filesData = [];
 
-      const fetchFilesAndFolders = async () => {
-        try {
-          let foldersData = [];
-          let filesData = [];
+            if (role === 'teacher') {
+              if (currentUser && currentUserId) {
+                const lecturerRef = doc(firestore, 'Lecturer', currentUserId);
+                const lecturerDoc = await getDoc(lecturerRef);
 
-          if (role === 'teacher') {
-            if (currentUser && currentUserId) {
-              const lecturerRef = doc(firestore, 'Lecturer', currentUserId);
-              const lecturerDoc = await getDocs(lecturerRef);
+                if (lecturerDoc.exists()) {
+                  const lecturerInfo = lecturerDoc.data();
+                  const department = lecturerInfo.department;
 
-              if (lecturerDoc.exists()) {
-                const lecturerInfo = lecturerDoc.data();
-                const department = lecturerInfo.department;
+                  if (department) {
+                        // Fetch folders
+                    const foldersSnapshot = await getDocs(collection(firestore, 'Folder'), where('department', '==', department));
+                    foldersData = foldersSnapshot.docs.map((doc) => doc.data());
+                    
 
-                if (department) {
-                      // Fetch folders
-                  const foldersSnapshot = await getDocs(collection(firestore, 'Folder'), where('department', '==', department));
-                  foldersData = foldersSnapshot.docs.map((doc) => doc.data());
-                  
-
-                      // Fetch files
-                  const filesSnapshot = await getDocs(collection(firestore, 'File'), where('department', '==', department));
-                  filesData = filesSnapshot.docs.map((doc) => doc.data());
+                        // Fetch files
+                    const filesSnapshot = await getDocs(collection(firestore, 'File'), where('department', '==', department));
+                    filesData = filesSnapshot.docs.map((doc) => doc.data());
+                    
+                  }
                   
                 }
                 setFoldersData(foldersData);
-                setFilesData(filesData);
+                setTeacherFilesData(filesData);
+                setLoading(false);
               }
-              setLoading(false);
             }
-          }
-          else if (role === 'student') {
-            if (currentStudent && currentStudentId) {
-              const studentRef = doc(firestore, 'Student', currentStudentId);
-              const studentDoc = await getDoc(studentRef);
+            else if (role === 'student') {
+              if (currentStudent && currentStudentId) {
+                const studentRef = doc(firestore, 'Student', currentStudentId);
+                const studentDoc = await getDoc(studentRef);
 
-              if (studentDoc.exists()) {
-                const studentInfo = studentDoc.data();
-                const course = studentInfo.programName;
+                if (studentDoc.exists()) {
+                  const studentInfo = studentDoc.data();
+                  const course = studentInfo.programName;
 
-                if (course) {
-                      // Fetch files
-                  const filesSnapshot = await getDocs(collection(firestore, 'File'), where('department', '==', course));
-                  filesData = filesSnapshot.docs.map((doc) => doc.data());
-                  
+                  if (course) {
+                        // Fetch files
+                    const filesSnapshot = await getDocs(collection(firestore, 'File'), where('department', '==', course));
+                    filesData = filesSnapshot.docs.map((doc) => doc.data());
+                    
+                  }
+                  setFilesData(filesData);
                 }
-                setFilesData(filesData);
+                setLoading(false);
               }
-              setLoading(false);
             }
           }
+          catch (err) {
+            console.log('Error fetching File/Folder', err);
+          }
         }
-        catch (err) {
-          console.log('Error fetching File/Folder', err);
-        }
-      }
-
-
-      useEffect(() => {
+      
         fetchFilesAndFolders();
         // eslint-disable-next-line
       }, []);
@@ -166,7 +166,7 @@ const ShowItems = ({ title, role }) => {
   return (
     <div className='w-full'>
         <h4 className='text-center border-bottom'>{title}</h4>
-        <div className='flex flex-col lg:flex-row gap-2 py-4 px-5 flex-wrap'>
+        <div className='flex items-center lg:items-start justify-center lg:justify-between gap-2 py-4 px-5 flex-wrap'>
           {loading ? (
             <React.Fragment>
               <p className='text-xs md:text-sm lg:text-base xl:text-xl text-blue-600 dark:text-white'>Loading...</p>
@@ -175,15 +175,22 @@ const ShowItems = ({ title, role }) => {
             <React.Fragment>
               {foldersData.map((folder, index) => {
                 return (
-                  <React.Fragment>
-                      <p key={index * 55}  className='flex flex-col py-3 text-center items-center w-32 border'> <FaFolder size='50' className='mb-3' />{folder.documentName}</p>
+                  <React.Fragment key={index}>
+                      <p className='flex flex-col py-3 text-center items-center w-32 border'> <FaFolder size='50' className='mb-3' />{folder.documentName}</p>
                   </React.Fragment>  
+                )
+              })}
+              {teacherFilesData.map((file, index) => {
+                return (
+                  <React.Fragment key={index}>
+                      <p className='flex flex-col py-3 text-center items-center w-32 border'><FaFileLines size='50' className='mb-3' />{file.documentName}</p>
+                  </React.Fragment>
                 )
               })}
               {filesData.map((file, index) => {
                 return (
-                  <React.Fragment>
-                      <p key={index * 55} className='flex flex-col py-3 text-center items-center w-32 border'><FaFileLines size='50' className='mb-3' />{file.documentName}</p>
+                  <React.Fragment key={index}>
+                      <p className='flex flex-col py-3 text-center items-center w-32 border'><FaFileLines size='50' className='mb-3' />{file.documentName}</p>
                   </React.Fragment>
                 )
               })}
