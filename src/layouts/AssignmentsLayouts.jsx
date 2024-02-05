@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { FaFileCirclePlus, FaFileArrowUp, FaFolderPlus } from "react-icons/fa6";
 // import { BsFileEarmarkArrowDownFill } from "react-icons/bs";
 // import { HiMiniFolderArrowDown } from "react-icons/hi2";
@@ -13,11 +13,13 @@ const AssignmentsLayouts = ({ role }) => {
       const queryParams = new URLSearchParams(location.search);
       role = queryParams.get('role');
 
-      const folders = ['New Folder', 'New folder 2'];
-      const files = ['New File', 'New file 2'];
+      const folders = [{ name: 'New Folder' }, { name: 'New folder 2' }];
+      const files = [{ name: 'New File' }, { name: 'New file 2' }];
 
-
-      
+          // eslint-disable-next-line
+      const [foldersData, setFoldersData] = useState([]);
+          // eslint-disable-next-line
+      const [filesData, setFilesData] = useState([]);
 
 
       const [modalData, setModalData] = useState({
@@ -50,6 +52,8 @@ const AssignmentsLayouts = ({ role }) => {
 
 
 
+
+
   return (
     <div className='flex items-center justify-center w-full h-screen'>
         <div className='flex flex-col items-center w-full h-[100%] py-4 px-2 gap-4 lg:gap-2'>
@@ -68,22 +72,22 @@ const AssignmentsLayouts = ({ role }) => {
                 <div className='flex w-full items-start flex-col'>
                   <Breadcrumb fontWeight='medium' fontSize='sm' flexDir='column'>
                     <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
-                      <BreadcrumbLink href='#'>Home</BreadcrumbLink>
+                      <BreadcrumbLink as={NavLink} to='#'>Home</BreadcrumbLink>
                     </BreadcrumbItem>
 
                     <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
-                      <BreadcrumbLink href='#'>About</BreadcrumbLink>
+                      <BreadcrumbLink as={NavLink} to='#'>About</BreadcrumbLink>
                     </BreadcrumbItem>
 
                     <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
-                      <BreadcrumbLink href='#'>Current</BreadcrumbLink>
+                      <BreadcrumbLink as={NavLink} to='#'>Current</BreadcrumbLink>
                     </BreadcrumbItem>
                   </Breadcrumb>
                 </div>
 
 
-                <ShowItems title={'Created Folders'} items={folders} />
-                <ShowItems title={'Created Files'} items={files} />
+                <ShowItems title={'Created Folders'} items={folders} foldersData={foldersData} />
+                <ShowItems title={'Created Files'} items={files} filesData={filesData} />
             </React.Fragment>
               
           )}
@@ -101,22 +105,22 @@ const AssignmentsLayouts = ({ role }) => {
                 <div className='flex w-full items-start flex-col'>
                   <Breadcrumb fontWeight='medium' fontSize='sm' flexDir='column'>
                     <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
-                      <BreadcrumbLink href='#'>Home</BreadcrumbLink>
+                      <BreadcrumbLink as={NavLink} to='#'>Home</BreadcrumbLink>
                     </BreadcrumbItem>
 
                     <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
-                      <BreadcrumbLink href='#'>About</BreadcrumbLink>
+                      <BreadcrumbLink as={NavLink} to='#'>About</BreadcrumbLink>
                     </BreadcrumbItem>
 
                     <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
-                      <BreadcrumbLink href='#'>Current</BreadcrumbLink>
+                      <BreadcrumbLink as={NavLink} to='#'>Current</BreadcrumbLink>
                     </BreadcrumbItem>
                   </Breadcrumb>
                 </div>
 
-
-                <ShowItems title={'Created Folders'} items={folders} />
-                <ShowItems title={'Created Files'} items={files} />
+               
+                <ShowItems title={'Created Files'} items={files} filesData={filesData} />
+                
             </React.Fragment>
               
           )}

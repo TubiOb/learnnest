@@ -9,8 +9,8 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
         // Get role from the query parameters
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const currentPath = location.pathname;
     role = queryParams.get('role');
+    const currentPath = location.pathname + `?role=${role}`;
 
     const [currentUser, setCurrentUser] = useState('');
     const [currentStudent, setCurrentStudent] = useState('');
@@ -147,6 +147,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                             path: currentPath,
                             lastAccessed: null,
                             updatedAt: new Date(),
+                            department: department,
                         };
                     }
                     else if (role === 'student') {
@@ -155,8 +156,10 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                             documentName: documentName,
                             studentId: currentStudentId,
                             createdBy: currentStudent,
+                            path: currentPath,
                             lastAccessed: null,
                             updatedAt: new Date(),
+                            department: course,
                         };
                     }
                     
