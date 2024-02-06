@@ -38,7 +38,7 @@ const SidebarItems = ({ role }) => {
             { name: 'Courses', icon: SiGoogleclassroom, active: false, path: (`subjects?role=${role}`) },
             { name: 'Lecturers', icon: GiTeacher, active: false, path: (`teachers?role=${role}`) },
             { name: 'Students', icon: PiStudentDuotone, active: false, path: (`students?role=${role}`) },
-            // { name: 'Fees', icon: MdPayments, active: false, path: '' },
+            { name: 'Fees', icon: MdPayments, active: false, path: (`fees-gateway?role=${role}`) },
             // { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
         ];
     }

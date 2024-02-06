@@ -111,7 +111,7 @@ const StudentLayout = ({ role }) => {
     };
 
     fetchStudents();
-  });
+  }, [currentUser, currentUserId, role]);
 
 
 
