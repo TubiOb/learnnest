@@ -179,7 +179,7 @@ const AddCourseLayouts = ({ role }) => {
             );
         }
         catch (err) {
-            console.log(err.message);
+            // console.log(err.message);
             showToastMessage('Error saving course', 'error');
         }
     };
@@ -249,7 +249,6 @@ const AddCourseLayouts = ({ role }) => {
         }
         catch (err) {
             console.error('Error saving course:', err.message);
-            alert(err.message);
             showToastMessage('Error saving course', 'error');
         }
     };
@@ -324,7 +323,7 @@ const AddCourseLayouts = ({ role }) => {
                             {courseDetails}
                         </div>
 
-                        type="text" label="Course Name" placeholder="Course Name" value={formData.courseName} onChange={handleCourseNameChange}
+                        <button type="submit" className='text-white px-2 py-2 rounded-xl w-[70%] mx-auto bg-blue-400 font-semibold shadow-neutral-200 border-neutral-50 shadow-md transition duration-300  hover:font-semibold hover:bg-white hover:text-blue-400 hover:shadow-neutral-300 text-sm md:text-lg flex items-center justify-center' >Add Course</button>
                     </form>
 
                     <div className='flex flex-col w-[90%] lg:w-[80%] justify-start h-auto mx-auto py-2 px-2 gap-3 text-center bg-gray-600 text-white dark:bg-white dark:text-blue-600 rounded-md'>

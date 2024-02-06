@@ -181,12 +181,13 @@ const StudentLayout = ({ role }) => {
           });
 
           setAdminStudents(adminStudentData);
+          setLoading(false);
         }
       }
     }
 
     fetchAllStudents();
-  })
+  }, [admin, adminId, role])
   
 
 
