@@ -228,7 +228,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                             path: currentPath,
                             parentfolder: parentFolder,
                             lastAccessed: null,
-                            updatedAt: new Date(),
+                            // updatedAt: new Date(),
                             department: department,
                         };
                     }
@@ -242,7 +242,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                             path: currentPath,
                             parentfolder: parentFolder,
                             lastAccessed: null,
-                            updatedAt: new Date(),
+                            // updatedAt: new Date(),
                             department: course,
                         };
                     }
