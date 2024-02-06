@@ -338,7 +338,7 @@ const FeePaymentsLayout = ({ role }) => {
               amount: enteredAmount,
               programName: selectedCourse.programName,
               paymentReference: transaction.reference,
-              paidAt: new Date(),
+              // paidAt: new Date(),
             };
 
                 // eslint-disable-next-line
