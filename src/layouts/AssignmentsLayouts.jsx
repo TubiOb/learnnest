@@ -13,11 +13,15 @@ const AssignmentsLayouts = ({ role }) => {
       const queryParams = new URLSearchParams(location.search);
       role = queryParams.get('role');
 
+      // eslint-disable-next-line
       const folders = [{ name: 'New Folder', type: 'folder' }, { name: 'New folder 2', type: 'folder' }];
+      // eslint-disable-next-line
       const files = [{ name: 'New File', type: 'file' }, { name: 'New file 2', type: 'file' }];
 
           // eslint-disable-next-line
       const [foldersData, setFoldersData] = useState([]);
+          // eslint-disable-next-line
+      const [teacherFilesData, setTeacherFilesData] = useState([]);
           // eslint-disable-next-line
       const [filesData, setFilesData] = useState([]);
 
@@ -52,6 +56,14 @@ const AssignmentsLayouts = ({ role }) => {
 
 
 
+      const handleItemsChange = ({ filesData, teacherFilesData, foldersData }) => {
+        setFilesData(filesData);
+        setTeacherFilesData(teacherFilesData);
+        setFoldersData(foldersData);
+      }
+
+
+
 
 
   return (
@@ -70,24 +82,20 @@ const AssignmentsLayouts = ({ role }) => {
 
 
                 <div className='flex w-full items-start flex-col'>
-                  <Breadcrumb fontWeight='medium' fontSize='sm' flexDir='column'>
-                    <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
+                  <Breadcrumb fontWeight='medium' marginStart='5' fontSize='sm' flexDir='column'>
+                    <BreadcrumbItem isCurrentPage _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
                       <BreadcrumbLink as={NavLink} to='#'>Home</BreadcrumbLink>
                     </BreadcrumbItem>
 
                     <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
                       <BreadcrumbLink as={NavLink} to='#'>About</BreadcrumbLink>
                     </BreadcrumbItem>
-
-                    <BreadcrumbItem _hover={{ cursor: 'pointer', color: 'black' }} className='dark:hover:text-white'>
-                      <BreadcrumbLink as={NavLink} to='#'>Current</BreadcrumbLink>
-                    </BreadcrumbItem>
                   </Breadcrumb>
                 </div>
 
 
-                <ShowItems title={'Created Folders'} items={folders.filter(item => item.type === 'folder')} foldersData={foldersData} />
-                <ShowItems title={'Created Files'} items={files.filter(item => item.type === 'file')} filesData={filesData} />
+                <ShowItems title={'Created Folders'} items={foldersData.filter(item => item.type === 'folder')} foldersData={foldersData} onItemsChange={handleItemsChange} />
+                {/* <ShowItems title={'Created Files'} items={files.filter(item => item.type === 'file')} filesData={teacherFilesData} onItemsChange={handleItemsChange} /> */}
             </React.Fragment>
               
           )}
@@ -119,7 +127,7 @@ const AssignmentsLayouts = ({ role }) => {
                 </div>
 
                
-                <ShowItems title={'Created Files'} items={files.filter(item => item.type === 'file')} filesData={filesData} />
+                {/* <ShowItems title={'Created Files'} items={files.filter(item => item.type === 'file')}  filesData={filesData} onItemsChange={handleItemsChange} /> */}
             </React.Fragment>
               
           )}

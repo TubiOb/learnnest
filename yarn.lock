@@ -2989,6 +2989,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@paystack/inline-js@^2.14.0":
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/@paystack/inline-js/-/inline-js-2.14.0.tgz#03d7bdc24b069cd4b0d8b76ff23c325115756034"
+  integrity sha512-EkOyp6PbF/q+iE8tTfj5Q9XfSWbRG1KarCmb+V9z+zornHdHmJ3XX3tbI1qhP+dxEhC+1CUqbiQKZ+Vt67Xayg==
+
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"

@@ -137,10 +137,6 @@ const DashboardLayout = ({ role }) => {
 
 
 
-
-
-
-
   useEffect(() => {
     const fetchLecturerCount = async () => {
         try {

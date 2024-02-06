@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Logo from '../assets/logo192.png'
 import { NavLink } from 'react-router-dom';
-import { IoCalendarOutline } from "react-icons/io5";
+// import { IoCalendarOutline } from "react-icons/io5";
 import { GiTeacher, GiArchiveRegister } from "react-icons/gi";
 import { LuLayoutDashboard, LuSunDim } from "react-icons/lu";
 import { PiStudentDuotone, PiMoonDuotone } from "react-icons/pi";
@@ -38,8 +38,8 @@ const SidebarItems = ({ role }) => {
             { name: 'Courses', icon: SiGoogleclassroom, active: false, path: (`subjects?role=${role}`) },
             { name: 'Lecturers', icon: GiTeacher, active: false, path: (`teachers?role=${role}`) },
             { name: 'Students', icon: PiStudentDuotone, active: false, path: (`students?role=${role}`) },
-            { name: 'Fees', icon: MdPayments, active: false, path: '' },
-            { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
+            // { name: 'Fees', icon: MdPayments, active: false, path: '' },
+            // { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
         ];
     }
     else if (role === 'teacher') {
@@ -48,8 +48,8 @@ const SidebarItems = ({ role }) => {
             { name: 'Courses', icon: SiGoogleclassroom, active: false, path: (`courses?role=${role}`) },
             { name: 'Students', icon: PiStudentDuotone, active: false, path: (`students?role=${role}`) },
             { name: 'Assignment', icon: MdAssignment, active: false, path: (`assignments?role=${role}`) },
-            { name: 'Test', icon: SiTestcafe, active: false, path: '' },
-            { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
+            { name: 'Test', icon: SiTestcafe, active: false, path: (`test?role=${role}`)  },
+            // { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
         ];
     }
     else if (role === 'student') {
@@ -57,9 +57,9 @@ const SidebarItems = ({ role }) => {
             { name: 'Dashboard', icon: LuLayoutDashboard, active: true, path: (`/dashboard?role=${role}`) },
             { name: 'Course Registration', icon: GiArchiveRegister, active: false, path: (`courses?role=${role}`) },
             { name: 'Assignment', icon: MdAssignment, active: false, path: (`assignments?role=${role}`) },
-            { name: 'Test', icon: SiTestcafe, active: false, path: '' },
-            { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
-            { name: 'Fees Payments', icon: MdPayments, active: false, path: '' },
+            { name: 'Test', icon: SiTestcafe, active: false, path: (`test?role=${role}`)  },
+            // { name: 'Calendar', icon: IoCalendarOutline, active: false, path: '' },
+            { name: 'Fees Payments', icon: MdPayments, active: false, path: (`fees-gateway?role=${role}`) },
         ];
     }
 

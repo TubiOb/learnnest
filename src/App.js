@@ -17,6 +17,8 @@ import FieldRegistrationLayout from './layouts/FieldRegistrationLayout';
 import AddCourseLayouts from './layouts/AddCourseLayouts';
 import AssignmentsLayouts from './layouts/AssignmentsLayouts';
 import TestsLayout from './layouts/TestsLayout';
+import FeePaymentsLayout from './layouts/FeePaymentsLayout';
+// import FoldersLayout from './layouts/FoldersLayout';
 
 function App({ role }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -36,8 +38,12 @@ function App({ role }) {
           <Route path={'register-study-course'} element={<FieldRegistrationLayout role={role} />} />
           <Route path={'subjects'} element={<AddCourseLayouts role={role} />} />
           <Route path={'assignments'} element={<AssignmentsLayouts role={role} />} />
-          <Route path={'tests'} element={<TestsLayout role={role} />} />
+          <Route path={'test'} element={<TestsLayout role={role} />} />
+          <Route path={'fees-gateway'} element={<FeePaymentsLayout role={role} />} />
+          {/* <Route path='assignments/folder/:documentId' element={<FoldersLayout role={role} />} />
+          <Route path='test/folder/:documentId' element={<FoldersLayout role={role} />} /> */}
         </Route>
+        
       </Route>
     )
   )

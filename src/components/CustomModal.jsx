@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react'
 import CustomInput from './CustomInput';
 import { collection, doc, getDoc, getDocs, setDoc, where } from 'firebase/firestore';
 import { auth, firestore } from '../Firebase';
+import { toast } from 'sonner'
+import Toast from '../components/Toast';
 
 const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholder, buttonName, role }) => {
         // Get role from the query parameters
@@ -45,6 +47,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                     }
                 }
                 catch (err) {
+                    showToastMessage('Teacher account not found', 'error');
                     console.error('Error fetching user data:', err);
                 }
             }
@@ -82,6 +85,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
               }
             }
             catch (err) {
+                showToastMessage('Student account not found', 'error');
               console.error('Error fetching user data:', err);
             }
           }
@@ -125,7 +129,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
         const folderExists = await checkIfFolderExists(formData.name);
 
         if (folderExists) {
-            alert(`The folder with name '${formData.name}' already exists.`);
+            showToastMessage(`The folder with name '${formData.name}' already exists.`, 'error');
         }
 
         try {
@@ -134,6 +138,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
             const docId = docRef.id;
 
             const documentName = formData.name;
+            const parentFolder = formData.parentFolder;
             if (documentName) {
                 if (documentName.length >= 3) {
                     let document;
@@ -146,6 +151,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                             userId: currentUserId,
                             createdBy: currentUser,
                             path: currentPath,
+                            parentfolder: parentFolder,
                             lastAccessed: null,
                             updatedAt: new Date(),
                             department: department,
@@ -159,6 +165,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                             studentId: currentStudentId,
                             createdBy: currentStudent,
                             path: currentPath,
+                            parentfolder: parentFolder,
                             lastAccessed: null,
                             updatedAt: new Date(),
                             department: course,
@@ -167,18 +174,18 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
 
                     await setDoc(docRef, document);
 
-                    alert(`Successfully created file with name '${documentName}'.`);
+                    showToastMessage(`Successfully created file with name '${documentName}'`, 'success');
                 }
                 else {
-                    alert('Folder name must be at least 3 chaacters');
+                    showToastMessage('Folder name must be at least 3 chaacters', 'warning');
                 }
             }
             else {
-                alert('Please fill in folder name');
+                showToastMessage('Please fill in folder name', 'warning');
             }
         }
         catch (err) {
-            alert('Error saving ' + err);
+            showToastMessage('Error saving', 'error');
             console.log('Error saving ' + err);
         }
         
@@ -197,7 +204,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
         const fileExists = await checkIfFileExists(formData.name);
 
         if (fileExists) {
-            alert(`The file with name '${formData.name}' already exists.`);
+            showToastMessage(`The file with name '${formData.name}' already exists.`, 'error')
         }
 
         try {
@@ -206,6 +213,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
             const docId = docRef.id;
 
             const documentName = formData.name;
+            const parentFolder = formData.parentFolder;
             if (documentName) {
                 if (documentName.length >= 3) {
                     let document;
@@ -218,6 +226,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                             userId: currentUserId,
                             createdBy: currentUser,
                             path: currentPath,
+                            parentfolder: parentFolder,
                             lastAccessed: null,
                             updatedAt: new Date(),
                             department: department,
@@ -231,6 +240,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                             studentId: currentStudentId,
                             createdBy: currentStudent,
                             path: currentPath,
+                            parentfolder: parentFolder,
                             lastAccessed: null,
                             updatedAt: new Date(),
                             department: course,
@@ -239,18 +249,18 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
 
                     await setDoc(docRef, document);
 
-                    alert(`Successfully created file with name '${documentName}'.`);
+                    showToastMessage(`Successfully created file with name '${documentName}'.`, 'success');
                 }
                 else {
-                    alert('File name must be at least 3 chaacters');
+                    showToastMessage('File name must be at least 3 chaacters', 'warning');
                 }
             }
             else {
-                alert('Please fill in file name');
+                showToastMessage('Please fill in file name', 'warning');
             }
         }
         catch (err) {
-            alert('Error saving ' + err);
+            showToastMessage('Error saving', 'error');
             console.log('Error saving ' + err);
         }
 
@@ -285,6 +295,40 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
         return !querySnapshot.empty;
     };
 
+
+
+
+
+
+
+        //   CONFIGURING TOAST TO TOAST MESSAGE
+        const showToastMessage = (message, type) => {
+            switch (type) {
+                case 'success':
+                    toast.success(message, {
+                        position: 'top-right',
+                        duration: 3000,
+                        preventDefault: true,
+                    });
+                    break;
+                case 'error':
+                    toast.error(message, {
+                        position: 'top-right',
+                        duration: 3000,
+                        preventDefault: true,
+                    });
+                    break;
+                case 'warning':
+                    toast.warning(message, {
+                        position: 'top-right',
+                        duration: 3000,
+                        preventDefault: true,
+                    });
+                    break;
+                default:
+                    break;
+            }
+          };
 
     
 
@@ -332,6 +376,8 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                 </ModalFooter>
             </ModalContent>
         </Modal>
+
+        <Toast showToast={showToastMessage} />
     </div>
   )
 }
