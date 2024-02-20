@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import Toast from '../components/Toast';
 import { addDoc, collection, doc, getDoc, getDocs, where } from 'firebase/firestore';
 import { auth, firestore } from '../Firebase';
+import CustomTable from '../components/CustomTable';
 
 const FeePaymentsLayout = ({ role }) => {
        // Get role from the query parameters
@@ -29,8 +30,24 @@ const FeePaymentsLayout = ({ role }) => {
     // eslint-disable-next-line
     const [selectedCourse, setSelectedCourse] = useState(null);
     const [schoolFees, setSchoolFees] = useState(0);
+    const [loading, setLoading] = useState(true);
 
+    const isInputDisabled = true;
 
+    const feeCoumns = ['Course ID', 'Course Name', 'Course Fee']
+
+    const paymentColumns = ['Student ID', 'Student Name', 'Email', 'Department', 'Amount Paid', 'Date'];
+
+    const [feesPaymentData, setFeesPaymentData] = useState([]);
+    const [paidSchoolFeesData, setPaidSchoolFeesData] = useState([]);
+
+    const handleRowSelect = (selectedRows) => {
+      // console.log('Selected Rows:', selectedRows);
+    };
+
+    const handleRowAction = (selectedRow) => {
+      // console.log('Row Action:', selectedRow);
+    };
 
 
 
@@ -286,7 +303,51 @@ const FeePaymentsLayout = ({ role }) => {
         showToastMessage('Error saving payment. Please try again.', 'error');
         console.error('Error saving payment:', err);
       }
-    }
+    };
+
+
+
+
+
+
+    useEffect(() => {
+      const fetchFeesPaymentData = async () => {
+        try {
+          const querySnapshot = await getDocs(collection(firestore, 'Fees Payments'));
+          const data = querySnapshot.docs.map((doc) => {
+            const feeData = doc.data();
+            return { id: feeData.courseId, courseName: feeData.programName, amount: feeData.amount };
+          });
+          setFeesPaymentData(data);
+          // console.log(feesPaymentData);
+          setLoading(false);
+        } catch (error) {
+          console.error('Error fetching Fees Payment Data:', error);
+        }
+      };
+  
+      const fetchPaidSchoolFeesData = async () => {
+        try {
+          const querySnapshot = await getDocs(collection(firestore, 'Paid School Fees'));
+          const data = querySnapshot.docs.map((doc) => {
+            const paidFeeData = doc.data();
+            return { id: paidFeeData.userId, studentname: paidFeeData.studentName, email: paidFeeData.email, amount: paidFeeData.amount, programName: paidFeeData.programName, paidAt: paidFeeData.paidAt };
+          });
+          setPaidSchoolFeesData(data);
+          setLoading(false);
+          // console.log(paidSchoolFeesData);
+        } catch (error) {
+          console.error('Error fetching Paid School Fees Data:', error);
+        }
+      };
+  
+      fetchFeesPaymentData();
+      fetchPaidSchoolFeesData();
+    }, [feesPaymentData, paidSchoolFeesData]);
+
+
+
+
 
 
 
@@ -304,7 +365,10 @@ const FeePaymentsLayout = ({ role }) => {
       }
     
       if (enteredAmount !== schoolFees) {
-        showToastMessage('The entered amount does not match the school fees.', 'warning');
+        showToastMessage('Payment must cover full fees to proceed.', 'warning');
+        setFormData({
+          amount: '',
+        })
         return;
       }
 
@@ -319,13 +383,6 @@ const FeePaymentsLayout = ({ role }) => {
           let message = `Payment Successful! Reference ${transaction.reference}`
           // alert(message);
           showToastMessage(message, 'success');
-
-          setFormData({
-            firstName: '',
-            lastName: '',
-            email: '',
-            amount: '',
-          })
 
 
           try {
@@ -400,7 +457,7 @@ const FeePaymentsLayout = ({ role }) => {
 
   return (
     <div className='flex items-center justify-center w-full h-full lg:h-screen'>
-        <div className='flex flex-col items-center justify-between w-full h-full lg:h-screen py-4 px-2 gap-4 lg:gap-2'>
+        <div className='flex flex-col lg:flex-row items-center justify-between w-full h-screen py-4 px-2 gap-4 lg:gap-2'>
           {role === 'admin' && (
             <React.Fragment>
               <div className='w-full lg:w-[40%] flex flex-col items-start justify-start h-auto lg:h-full p-1 gap-3'>
@@ -427,25 +484,47 @@ const FeePaymentsLayout = ({ role }) => {
               </div>
 
               <div className='w-full lg:w-[60%] flex items-start justify-center h-screen'>
-                    
+                <div className='flex flex-col w-full h-full items-start justify-between gap-3 px-2 py-3 overflow-y-auto'>
+                  <div className='flex items-center flex-col gap-2 w-full'>
+                    <h3>Course Fees</h3>
+                    {loading ? (
+                      <p className='text-xs md:text-sm lg:text-base xl:text-xl text-blue-600 dark:text-white'>Loading...</p>
+                    ) : (
+                      <CustomTable columns={feeCoumns} data={feesPaymentData} onRowSelect={handleRowSelect} onRowAction={handleRowAction} />
+                    )}
+                  </div>
+                  <div className='flex items-center flex-col gap-2 w-full'>
+                    <h3>Fee Payment Roster</h3>
+                    {loading ? (
+                      <p className='text-xs md:text-sm lg:text-base xl:text-xl text-blue-600 dark:text-white'>Loading...</p>
+                    ) : (
+                      <CustomTable columns={paymentColumns} data={paidSchoolFeesData} onRowSelect={handleRowSelect} onRowAction={handleRowAction} />
+                    )}
+                  </div>
+                </div>
               </div>
             </React.Fragment>
           )}
           {role === 'student' && (
             <React.Fragment>
-              <div className='rounded-xl bg-sky-700 text-white w-[90%] md:w-[70%] lg:w-[80%] xl:w-[55%] mx-auto h-auto py-5 px-3 gap-2 flex flex-col items-center justify-center dark:bg-white dark:text-blue-600'>
-                <div className='flex items-center flex-col w-[95%] lg:w-[80%] mx-auto text-center p-2 gap-1'>
-                  <h4 className='text-sm lg:text-xl 2xl:text-2xl'>Make Payments</h4>
-                </div>
-                <form onSubmit={payWithPaystack} id='paymentForm' className='w-[95%] md:w-[80%] mt-2 flex flex-col justify-between gap-2.5'>
-                  <CustomInput type="email" id='email-address' label="Email Address" placeholder="Email Address" value={formData.email} onChange={handleEmailChange} />
-                  <CustomInput type="tel" id='amount' label="Amount" placeholder="Amount" value={formData.amount} onChange={handleAmountChange} />
-                  <CustomInput type="text" id='first-name' label="First Name" placeholder="First Name" value={formData.firstName} onChange={handleFirstNameChange} />
-                  <CustomInput type="text" id='last-name' label="Last Name" placeholder="Last Name" value={formData.lastName} onChange={handleLastNameChange} />
+              <div className='w-full lg:w-[40%] flex flex-col items-center justify-center lg:items-start lg:justify-start h-full p-1 gap-3'>
+                <div className='rounded-xl bg-sky-700 text-white w-[90%] md:w-[70%] lg:w-[80%] xl:w-[75%] mx-auto h-auto py-5 px-3 gap-2 flex flex-col items-center justify-center dark:bg-white dark:text-blue-600'>
+                  <div className='flex items-center flex-col w-[95%] lg:w-[80%] mx-auto text-center p-2 gap-1'>
+                    <h4 className='text-sm lg:text-xl 2xl:text-2xl'>Make Payments</h4>
+                  </div>
+                  <form onSubmit={payWithPaystack} id='paymentForm' className='w-[95%] md:w-[80%] mt-2 flex flex-col justify-between gap-2.5'>
+                    <CustomInput type="email" id='email-address' label="Email Address" placeholder="Email Address" value={formData.email} onChange={handleEmailChange} />
+                    <CustomInput type="tel" id='amount' label="Fees Amount" placeholder="Fees Amount" value={schoolFees} onChange={''} disabled={isInputDisabled} />
+                    <CustomInput type="tel" id='amount' label="Amount" placeholder="Amount" value={formData.amount} onChange={handleAmountChange} />
+                    <CustomInput type="text" id='first-name' label="First Name" placeholder="First Name" value={formData.firstName} onChange={handleFirstNameChange} />
+                    <CustomInput type="text" id='last-name' label="Last Name" placeholder="Last Name" value={formData.lastName} onChange={handleLastNameChange} />
 
-                  <button type="submit" className='text-white px-2 py-2 rounded-xl w-[70%] mx-auto bg-blue-400 font-semibold shadow-neutral-200 border-neutral-50 shadow-md transition duration-300  hover:font-semibold hover:bg-white hover:text-blue-400 hover:shadow-neutral-300 text-sm md:text-lg flex items-center justify-center' >Pay</button>
-                </form>
+                    <button type="submit" className='text-white px-2 py-2 rounded-xl w-[70%] mx-auto bg-blue-400 font-semibold shadow-neutral-200 border-neutral-50 shadow-md transition duration-300  hover:font-semibold hover:bg-white hover:text-blue-400 hover:shadow-neutral-300 text-sm md:text-lg flex items-center justify-center' >Pay</button>
+                  </form>
+                </div>
               </div>
+
+             
             </React.Fragment>
           )}
           

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
-const CustomInput = ({ type, placeholder, label, value, onChange }) => {
+const CustomInput = ({ type, placeholder, label, value, onChange, disabled }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -19,6 +19,7 @@ const CustomInput = ({ type, placeholder, label, value, onChange }) => {
           placeholder={placeholder}
           value={value}
           onChange={(event) => onChange(event.target.value)}
+          disabled={disabled}
         />
         {type === 'password' && (
           <div className='w-auto h-full secure bg-blue-100 text-blue-600 peer-focus:bg-blue-100 rounded-r-lg flex items-center py-2 md:py-1.5 lg:py-1 px-2 xl:px-3 xl:py-2.5' >

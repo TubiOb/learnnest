@@ -166,8 +166,7 @@ const DashboardLayout = ({ role }) => {
     };
   
     fetchLecturerCount();
-    // eslint-disable-next-line
-  }, []);
+  }, [currentUser, currentUserId]);
 
 
 
@@ -201,8 +200,7 @@ const DashboardLayout = ({ role }) => {
     };
 
     fetchStudentCount();
-    // eslint-disable-next-line
-  }, []);
+  }, [currentStudent, currentStudentId, studentCourseCount, studentLecturerCount]);
 
 
 

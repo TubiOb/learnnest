@@ -220,7 +220,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
 
                     if (role === 'teacher') {
                         document = {
-                            createdAt: new Date(),
+                            // createdAt: new Date(),
                             documentName: documentName,
                             documentId: docId,
                             userId: currentUserId,
@@ -234,7 +234,7 @@ const CustomModal = ({ isOpen, onClose, modalHeader, inputLabel, inputPlaceholde
                     }
                     else if (role === 'student') {
                         document = {
-                            createdAt: new Date(),
+                            // createdAt: new Date(),
                             documentName: formData.name,
                             documentId: docId,
                             studentId: currentStudentId,

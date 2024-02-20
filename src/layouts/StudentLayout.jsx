@@ -187,7 +187,7 @@ const StudentLayout = ({ role }) => {
     }
 
     fetchAllStudents();
-  }, [admin, adminId, role])
+  }, [admin, adminId, role]);
   
 
 

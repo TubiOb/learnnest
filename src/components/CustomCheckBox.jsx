@@ -27,7 +27,6 @@ const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange, role }) => {
                 setCurrentUserId(userUID);
                 const userDocRef = doc(firestore, `Student`, userUID);
                 try {
-                    console.log(userDocRef);
                     const userData = await getDoc(userDocRef);
 
                     if (userData.exists()) {
@@ -49,7 +48,6 @@ const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange, role }) => {
                 setCurrentUser('')
                 // setCurrentUserId('')
             }
-            console.log(currentUser);
         });
         return () => loggedInUser();
     }, [currentUser]);
@@ -79,8 +77,7 @@ const CustomCheckBox = ({ checkedItems, setCheckedItems, onChange, role }) => {
         };
    
         fetchCourses();
-        // eslint-disable-next-line
-    }, [])
+    }, [currentUser, userCourse])
 
 
 
