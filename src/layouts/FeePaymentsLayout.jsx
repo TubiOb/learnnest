@@ -83,12 +83,14 @@ const FeePaymentsLayout = ({ role }) => {
 
 
     const handleSelectCourse = (course) => {
-      setSelectedCourse(course);
       setSearchTerm(course.programName);
       setFormData((prevData) => ({
         ...prevData,
         amount: '', // Clear the amount when a course is selected
       }));
+      setSelectedCourse(course);
+      setFilteredCourses([]);
+      setFilteredData([]);
     };
 
 
@@ -310,14 +312,19 @@ const FeePaymentsLayout = ({ role }) => {
 
 
 
+    
+
+    
     useEffect(() => {
       const fetchFeesPaymentData = async () => {
         try {
-          const querySnapshot = await getDocs(collection(firestore, 'Fees Payments'));
+          const querySnapshot = await getDocs(collection(firestore, 'Fee Payments'));
+          // console.log(querySnapshot);
           const data = querySnapshot.docs.map((doc) => {
             const feeData = doc.data();
-            return { id: feeData.courseId, courseName: feeData.programName, amount: feeData.amount };
+            return { id: feeData.courseId, courseName: feeData.programName.programName, amount: feeData.amount };
           });
+          
           setFeesPaymentData(data);
           // console.log(feesPaymentData);
           setLoading(false);
@@ -329,9 +336,10 @@ const FeePaymentsLayout = ({ role }) => {
       const fetchPaidSchoolFeesData = async () => {
         try {
           const querySnapshot = await getDocs(collection(firestore, 'Paid School Fees'));
+          // console.log(querySnapshot);
           const data = querySnapshot.docs.map((doc) => {
             const paidFeeData = doc.data();
-            return { id: paidFeeData.userId, studentname: paidFeeData.studentName, email: paidFeeData.email, amount: paidFeeData.amount, programName: paidFeeData.programName, paidAt: paidFeeData.paidAt };
+            return { id: paidFeeData.userId, studentname: paidFeeData.studentName, email: paidFeeData.email, amount: paidFeeData.amount, programName: paidFeeData.programName };
           });
           setPaidSchoolFeesData(data);
           setLoading(false);
@@ -340,10 +348,10 @@ const FeePaymentsLayout = ({ role }) => {
           console.error('Error fetching Paid School Fees Data:', error);
         }
       };
-  
+
       fetchFeesPaymentData();
       fetchPaidSchoolFeesData();
-    }, [feesPaymentData, paidSchoolFeesData]);
+    });
 
 
 
@@ -456,7 +464,7 @@ const FeePaymentsLayout = ({ role }) => {
 
 
   return (
-    <div className='flex items-center justify-center w-full h-full lg:h-screen'>
+    <div className='flex items-center justify-center w-[85%] h-screen overflow-y-auto'>
         <div className='flex flex-col lg:flex-row items-center justify-between w-full h-screen py-4 px-2 gap-4 lg:gap-2'>
           {role === 'admin' && (
             <React.Fragment>

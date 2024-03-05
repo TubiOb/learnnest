@@ -139,7 +139,7 @@ const FieldRegistrationLayout = ({ role }) => {
 
 
   return (
-    <div className='flex items-center justify-center w-full h-screen'>
+    <div className='flex items-center justify-center w-[85%] h-screen'>
       <div className='flex flex-col lg:flex-row items-center justify-between w-full h-[100%] py-4 px-2'>
         <div className='w-full lg:w-[40%] flex flex-col items-start justify-start h-auto lg:h-full p-1 gap-3'>
           <form onSubmit={handleSave} className='w-[90%] lg:w-[80%] mt-2 flex flex-col justify-between text-center gap-6 mx-auto py-2 px-3 rounded-md bg-gray-600 text-white dark:bg-white dark:text-blue-600'>

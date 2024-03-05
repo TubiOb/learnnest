@@ -64,7 +64,7 @@ const SidebarItems = ({ role }) => {
     }
 
   return (
-    <nav className='h-[100svh] flex flex-col flex-grow fixed px-1 py-2 items-center justify-between text-sm md:text-md border-r border-r-gray-300 w-[50px]'>
+    <nav className='h-full shrink lg:h-screen lg:shrink-0 flex flex-col flex-grow fixed px-1 py-2 items-center justify-between text-sm md:text-md w-[50px]'>
         <Box className="flex items-center font-['Montserrat Alternates'] mx-auto mt-2">
             <img src={Logo} alt="Memomaze" className='w-full' />
         </Box>

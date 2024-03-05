@@ -293,7 +293,7 @@ const AddCourseLayouts = ({ role }) => {
 
 
   return (
-    <div className='flex items-center justify-center w-full h-full lg:h-screen'>
+    <div className='flex items-center justify-center w-[85%] h-full lg:h-screen'>
       <div className='flex flex-col lg:flex-row items-center justify-between w-full h-[100%] py-4 px-2 gap-4 lg:gap-0'>
         {role === 'admin' && (
             <React.Fragment>
