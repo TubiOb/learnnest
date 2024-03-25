@@ -18,7 +18,8 @@ const SidebarItems = ({ role }) => {
 
     const [activeMenu, setActiveMenu] = useState(() => {
         // Retrieve the active menu index from localStorage, defaulting to 0 if not present.
-        return parseInt(localStorage.getItem('activeMenuIndex')) || 0;
+        const storedActiveMenuIndex = parseInt(localStorage.getItem('activeMenuIndex'));
+        return storedActiveMenuIndex !== null ? storedActiveMenuIndex : 0;
     });
 
     useEffect(() => {
